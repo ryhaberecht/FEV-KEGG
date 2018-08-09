@@ -1,0 +1,10 @@
+**/__pycache__
+Test*.py
+test*.py
+env
+docs/_build
+docs/_static
+.*
+*.egg-info
+build
+!/.gitignore
