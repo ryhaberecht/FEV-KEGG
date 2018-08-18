@@ -4,7 +4,7 @@ README
 FEV\@KEGG
 ---------
 FEV\@KEGG allows for easy analysis of metabolic networks of organisms in KEGG (Kyoto Encyclopedia of Genes and Genomes).
-Read the whole documentation here: https://fev-kegg.readthedocs.io
+Read the API documentation here: https://fev-kegg.readthedocs.io
 
 
 Restrictions
@@ -33,6 +33,17 @@ Use pip to install FEV\@KEGG and to automagically install all dependencies:
 ``pip install FEV_KEGG``
 
 If you are on Python 3.4, you will have to use ``pip install FEV_KEGG[python34]`` to pull in the backported *typing* package.
+
+
+Where to start?
+---------------
+After successful installation, you might want to take a look at the "experiment" scripts in *FEV_KEGG/Experiments*.
+These scripts consecutively involve more and more functionality of this library. They were used during development, step by step adding and testing another layer of functionality or abstraction.
+Therefore, they might be useful to you in learning how to use this very functionality.
+
+Also, take a look at the API documentation: https://fev-kegg.readthedocs.io
+
+If any questions remain, feel free to report an issue: https://github.com/ryhaberecht/FEV-KEGG/issues
 
 
 Dependencies

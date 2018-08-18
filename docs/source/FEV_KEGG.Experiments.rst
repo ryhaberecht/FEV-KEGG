@@ -1,7 +1,6 @@
 FEV\_KEGG.Experiments package
 =============================
 
-
 Submodules
 ----------
 
@@ -56,6 +55,9 @@ Submodules
    FEV_KEGG.Experiments.48
    FEV_KEGG.Experiments.49
    FEV_KEGG.Experiments.50
+   FEV_KEGG.Experiments.51
+   FEV_KEGG.Experiments.52
+   FEV_KEGG.Experiments.53
 
 Module contents
 ---------------

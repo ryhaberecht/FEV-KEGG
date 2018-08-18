@@ -2771,7 +2771,7 @@ In total numbers, however, Betaproteobacteria have more neofunctionalisations. B
 from FEV_KEGG.KEGG.File import cache
 from FEV_KEGG.Evolution.Clade import Clade
 from FEV_KEGG.Robustness.Topology.Redundancy import RedundancyType, Redundancy, RedundancyContribution
-from FEV_KEGG.Util.Util import prettyPrintDict
+from FEV_KEGG.Util.Util import prettySortDict
 from FEV_KEGG.Statistics import Percent
 
 @cache(folder_path='experiments', file_name='alphaproteobacteria_clade')
@@ -2836,7 +2836,7 @@ if __name__ == '__main__':
         contributingNeofunctionalisedECs = set(contributedECsForContributingNeofunctionalisedEC.keys())
         
         output.append( '"neofunctionalised" ECs contributing to redundancy: ' + str(len(contributingNeofunctionalisedECs)) + ' (' + str(Percent.getPercentStringShort(len(contributingNeofunctionalisedECs), cladeAEcCount, 0)) + '%)' )
-        for neofunctionalisedEc, contributedECs in prettyPrintDict(contributedECsForContributingNeofunctionalisedEC, byValueFirst = False):
+        for neofunctionalisedEc, contributedECs in prettySortDict(contributedECsForContributingNeofunctionalisedEC, byValueFirst = False):
             output.append( str(neofunctionalisedEc) + '\t=> ' + str(contributedECs))
         output.append('')
         
@@ -2862,7 +2862,7 @@ if __name__ == '__main__':
         neofunctionalisations = clade.neofunctionalisations(majorityPercentageCoreMetabolism)
         output.append( 'Neofunctionalisations contributing to redundancy: ' + str(len(redundantECsForContributingNeofunctionalisation)) + ' (' + str(Percent.getPercentStringShort(len(redundantECsForContributingNeofunctionalisation), len(neofunctionalisations), 0)) + '%)' )
         
-        for neofunctionalisation, contributedECs in prettyPrintDict(redundantECsForContributingNeofunctionalisation, byValueFirst = True):
+        for neofunctionalisation, contributedECs in prettySortDict(redundantECsForContributingNeofunctionalisation, byValueFirst = True):
             output.append( str(neofunctionalisation) + '\t=> ' + str(contributedECs))
         
         output.append('')

@@ -2,6 +2,10 @@ Change version string
 ---------------------
 version.py -> __version__
 
+Append changelog
+----------------
+CHANGELOG.rst
+
 Activate virtualenv
 -------------------
 cd FEV_KEGG

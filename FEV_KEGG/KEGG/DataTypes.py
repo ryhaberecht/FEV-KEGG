@@ -250,7 +250,8 @@ class Substance(object):
             
             # default values
             self.description = ''
-            self.name = ''
+            self.shortestDescription = ''
+            self.firstDescription = ''
             
             firstLine = linesList[0]
             if 'Glycan' in firstLine:
@@ -259,6 +260,9 @@ class Substance(object):
                 self._parseCompound(linesList)
             else:
                 raise ValueError('Substance type unknown.')
+            
+            self.name = self.firstDescription
+            
         except:
             print( "Error while parsing a substance description into a KEGG.DataTypes.Substance object:" )
             print( content )
@@ -291,8 +295,9 @@ class Substance(object):
                         
                     elif lastSection == 'NAME':
                         
-                        self.name = min(currentContent, key=len).replace(';','')
                         self.description = ' \n'.join(currentContent)
+                        self.shortestDescription = min(currentContent, key=len).replace(';','')
+                        self.firstDescription = currentContent[0].replace(';','')
                     
                     elif lastSection == 'FORMULA':
                         
@@ -352,7 +357,8 @@ class Substance(object):
                     elif lastSection == 'COMPOSITION':
                         
                         self.description = ' \n'.join(currentContent)
-                        self.name = min(currentContent, key=len).replace(';','')
+                        self.shortestDescription = min(currentContent, key=len).replace(';','')
+                        self.firstDescription = currentContent[0].replace(';','')
 #                         self.composition = self.description
                     
                     elif lastSection == 'MASS':
@@ -405,7 +411,8 @@ class EcEnzyme(object):
             
             # default values
             self.description = ''
-            self.name = ''
+            self.shortestDescription = ''
+            self.firstDescription = ''
             self.reaction = ''
             
             # parse file data
@@ -434,7 +441,8 @@ class EcEnzyme(object):
                         elif lastSection == 'NAME':
                             
                             self.description = ' \n'.join(currentContent)
-                            self.name = min(currentContent, key=len).replace(';','')
+                            self.shortestDescription = min(currentContent, key=len).replace(';','')
+                            self.firstDescription = currentContent[0].replace(';','')
     #                         self.composition = self.description
                         
                         elif lastSection == 'REACTION':
@@ -458,6 +466,8 @@ class EcEnzyme(object):
                             currentContent = []
                             
                         currentSection = firstWord
+                        
+            self.name = self.firstDescription
             
         except:
             print( "Error while parsing an enzyme description into a KEGG.DataTypes.EcEnzyme object:" )

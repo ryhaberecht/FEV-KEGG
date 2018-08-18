@@ -1,4 +1,5 @@
 from typing import List, Tuple, Dict
+
 def deduplicateList(anyList: List, preserveOrder = False):
     """
     Deduplicates a list.
@@ -67,7 +68,8 @@ def chunks(iterable, chunk_size):
     for i in range(0, len(iterable), chunk_size):
         yield iterable[i:i + chunk_size]
 
-def prettyPrintDict(dictionary, byValueFirst = False) -> List[Tuple]:
+
+def prettySortDict(dictionary, byValueFirst = False) -> List[Tuple]:
     
     sortedValues = dict()
     for key, value in dictionary.items():
@@ -82,9 +84,10 @@ def prettyPrintDict(dictionary, byValueFirst = False) -> List[Tuple]:
         anonymousFunctionB = lambda item: item[0]
     
     preSortedDict = sorted(sortedValues.items(), key=anonymousFunctionA)
-    sortedDict = sorted(preSortedDict, key=anonymousFunctionB)
+    sortedList = sorted(preSortedDict, key=anonymousFunctionB)
     
-    return sortedDict
+    return sortedList
+
 
 def inverseDictKeepingAllKeys(dictionary) -> Dict:
     
@@ -99,4 +102,81 @@ def inverseDictKeepingAllKeys(dictionary) -> Dict:
         currentSet.add( key )
     
     return inversed
+
+
+def updateDictUpdatingValue(dictA, dictB):
+    """
+    Update `dictA` using `dictB`. However, if key already exists in dictA, does not overwrite dictA[key] with dictB[key], as the defautl update() function does, instead does an update: dictA[key].update( dictB[key] ).
     
+    Warnings
+    --------
+    Only works if dictA's values have an update() function, e.g. are sets!
+    """
+    for key, value in dictB.items():
+        
+        if dictA.get(key, None) is None: # does not exist in A, yet. Copy!
+            dictA[key] = value
+            
+        else: # already exists in A. Update!
+            dictA[key].update(value)
+    
+    return dictA
+
+
+def dictToHtml(dictionary, byValueFirst = False, addEcDescriptions = False) -> str:
+    
+    if addEcDescriptions is not False:        
+        from FEV_KEGG.Graph.Elements import EcNumber
+        EcNumber.addEcDescriptions(addEcDescriptions)
+    
+    sortedList = prettySortDict(dictionary, byValueFirst)
+    
+    from yattag import Doc
+    doc, tag, _ = Doc().tagtext()
+    
+    with tag('html'):
+        with tag('body'):
+            
+            for heading, rows in sortedList:
+                
+                with tag('p'):
+                    with tag('table'):
+                        doc.asis(heading.toHtml())
+                    
+                    with tag('table'):
+                        
+                        for row in rows:
+                            with tag('tr'):
+                                doc.asis(row.toHtml(short = True))
+                            
+    return doc.getvalue()
+    
+    
+def dictToHtmlFile(dictionary, file, byValueFirst = False, inCacheFolder = False, addEcDescriptions = False):
+    """
+    Parameters
+    ----------
+    file : str
+        Path and name of the exported file. See `inCacheFolder`.
+    inCacheFolder : bool, optional
+        If *True*, interpret `file` relative to the cache folder. See :attr:`FEV_KEGG.settings.cachePath`.
+        If *False*, interpret `file` relative to the current working directory.
+    """
+    import os
+    from FEV_KEGG import settings
+    from FEV_KEGG.KEGG import File
+    
+    htmlString = dictToHtml(dictionary, byValueFirst, addEcDescriptions)
+    
+    if not file.endswith('.html'):
+        file += '.html'
+    
+    if inCacheFolder is True:
+        file = os.path.join(settings.cachePath, file)
+    
+    dirName = os.path.dirname(file)
+    if not os.path.isdir(dirName) and dirName != '':
+        os.makedirs(os.path.dirname(file))
+    
+    File.writeToFile(htmlString, file)
+        

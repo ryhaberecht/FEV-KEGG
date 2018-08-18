@@ -99,7 +99,7 @@ class Clade(object):
         self._lastGeneDuplicatedEnzymesMatches = None
     
     
-    def collectiveMetabolism(self, excludeMultifunctionalEnzymes = defaultExcludeMultifunctionalEnzymes) -> SubstanceEcGraph:
+    def collectiveMetabolism(self, excludeMultifunctionalEnzymes = defaultExcludeMultifunctionalEnzymes, addEcDescriptions = False) -> SubstanceEcGraph:
         """
         The Substance-EC graph representing the collective metabolic network, occuring in any organism of the clade.
         
@@ -124,7 +124,7 @@ class Clade(object):
         URLError
             If connection to KEGG fails.
         """
-        graph = self.group.collectiveEcGraph(noMultifunctional = excludeMultifunctionalEnzymes, addCount = True, keepOnHeap = True)
+        graph = self.group.collectiveEcGraph(noMultifunctional = excludeMultifunctionalEnzymes, addCount = True, keepOnHeap = True, addEcDescriptions = addEcDescriptions)
         graph.name = 'Collective metabolism ECs ' + ' '.join(self.ncbiNames)
         return graph
     

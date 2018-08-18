@@ -2,6 +2,13 @@
 Settings used across the application.
 """
 
+### output formatting ###
+
+printElementUrl = False
+"""
+If True, when a :class:`Graph.Elements.Element` is returned in its string representation, append its URL to KEGG.
+This can quickly overencumber output!
+"""
 
 
 

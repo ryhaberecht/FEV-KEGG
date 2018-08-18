@@ -4,6 +4,7 @@ from typing import List, Iterable
 
 from FEV_KEGG.KEGG.DataTypes import Gene
 from FEV_KEGG.Util import Util
+from FEV_KEGG import settings
 
 
 class Element(object):
@@ -24,9 +25,46 @@ class Element(object):
             Unique element ID.
         """
         self.uniqueID = uniqueID
+    
+    def getUrl(self):
+        """
+        Get the link to KEGG for this EC number.
+        
+        Returns
+        -------
+        str
+            URL to KEGG.
+        """
+        return "http://kegg.jp/dbget-bin/www_bget?" + self.uniqueID
+    
+    def getRestUrl(self):
+        """
+        Get the link to KEGG's REST-API for this EC number.
+        
+        Essentially the same as :func:`getUrl`, but meant to be read by machines, therefore no eye-candy.
+        
+        Returns
+        -------
+        str
+            URL to KEGG's REST-API
+        """
+        return "http://rest.kegg.jp/get/" + self.uniqueID
+    
+    def toHtml(self, short = False):
+        """
+        Get the Element's string representation surrounded by its URL as an HTML line.
+        """
+        if self.name is None or short is True:
+            return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a><td></td>"
+        else:
+            return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a><td>(" + self.name + ")</td>"
+    
         
     def __str__(self):
-        return self.uniqueID
+        if settings.printElementUrl:
+            return str(self.uniqueID) + ' (' + self.getUrl() + ')'
+        else:
+            return self.uniqueID
     
     def __repr__(self):
         return self.__str__()
@@ -111,6 +149,7 @@ class SubstanceID(Element):
 
 
 
+
 class ReactionID(Element):
     
     def __init__(self, keggReactionID: 'R01899'):
@@ -191,7 +230,10 @@ class Enzyme(Element):
         self.organismAbbreviation = organismAbbreviation
         self.geneID = geneID
         self.geneName = geneName
-        self.name = name
+        if name is not None and name.__eq__(geneName):
+            self.name = None
+        else:
+            self.name = name
         self.ecNumbers = ecNumbers
         # replace useless substrings
         if description is not None:
@@ -286,7 +328,7 @@ class EcNumber(Element):
         self.description : str
             Descriptive name of the enzymes behind this EC number. May likely be *None*. Usually a list of synonymous names.
         self.name : str
-            Short name of the compound/glycan. May likely be *None*. Is the shortest name occuring in `description`.
+            Short name of the enzymes behind this EC number. May likely be *None*. Is the shortest name occuring in `description`.
         self.reaction : str
             IUBMB string describing the reaction formula. May likely be *None*.
         
@@ -503,6 +545,38 @@ class EcNumber(Element):
             filtered = Util.deduplicateList(filtered, preserveOrder = True)
         
         return filtered
+    
+    def addDescription(self):
+        """
+        Query KEGG and add further description to this EC number.
+        
+        Warnings
+        --------
+        Much slower than doing :func:`addEcDescriptions` for several EC numbers in bulk!
+        """
+        from FEV_KEGG.KEGG import Database
+        
+        ecNumberIdToEcEnzyme = Database.getEcEnzymeBulk([self])
+        ecEnzyme = ecNumberIdToEcEnzyme.get(self.uniqueID)
+        if ecEnzyme is not None:
+            self.description = ecEnzyme.description
+            self.name = ecEnzyme.name
+            self.reaction = ecEnzyme.reaction
+    
+    @staticmethod
+    def addEcDescriptions(ecNumbers: Iterable):
+        """
+        Query KEGG for further descriptions and add them to each EC number in `ecNumbers`.
+        """
+        from FEV_KEGG.KEGG import Database
+        
+        ecNumberIdToEcEnzyme = Database.getEcEnzymeBulk(ecNumbers)
+        for ecNumber in ecNumbers:
+            ecEnzyme = ecNumberIdToEcEnzyme.get(ecNumber.uniqueID)
+            if ecEnzyme is not None:
+                ecNumber.description = ecEnzyme.description
+                ecNumber.name = ecEnzyme.name
+                ecNumber.reaction = ecEnzyme.reaction
 
     
     

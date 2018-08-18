@@ -30,6 +30,10 @@ MAJORITY_NAME = 'custom_majority'
 """
 Name of the attribute of the graph to be used for storing the majority percentage.
 """
+URL_NAME = 'URL'
+"""
+Name of the attribute of the graph to be used for storing the URL.
+"""
 
 def addLabelAttribute(nxGraph: networkx.classes.MultiGraph):
     """
@@ -207,6 +211,37 @@ def addMajorityAttribute(graph: Models.CommonGraphApi, totalNumberOfOrganisms: i
         
         networkx.set_node_attributes(nxGraph, attributeDict, MAJORITY_NAME)
 
+def addUrlAttribute(nxGraph: networkx.classes.MultiGraph):
+    """
+    Adds the "URL" attribute to each edge.
+    
+    Add an attribute to edges called "URL" (see module variable :attr:`URL_NAME`) containing the edge's or node's URL to KEGG.
+    
+    Parameters
+    ----------
+    nxGraph : networkx.classes.MultiGraph
+        A NetworkX graph object.
+    """
+    if not isinstance(nxGraph, networkx.classes.graph.Graph):
+        raise NotImplementedError()
+    
+    # add label to edges
+    edges = nxGraph.edges(keys = True)
+
+    attributeDict = dict()
+    for edge in edges:
+        attributeDict[edge] = edge[2].getUrl()
+    
+    networkx.set_edge_attributes(nxGraph, attributeDict, URL_NAME)
+    
+    # add label to nodes
+    nodes = nxGraph.nodes
+    
+    attributeDict = dict()
+    for node in nodes:
+        attributeDict[node] = node.getUrl()
+    
+    networkx.set_node_attributes(nxGraph, attributeDict, URL_NAME)
 
 
 class Colour(Enum):
@@ -388,6 +423,7 @@ def forCytoscape(graph: Models.CommonGraphApi, file, inCacheFolder = False, addD
     addLabelAttribute(graph.underlyingRawGraph)
     addIdAttribute(graph.underlyingRawGraph)
     addDescriptionAttribute(graph.underlyingRawGraph)
+    addUrlAttribute(graph.underlyingRawGraph)
     if addDescriptions is True and isinstance(graph, SubstanceEcGraph):
         addReactionAttribute(graph.underlyingRawGraph)
     

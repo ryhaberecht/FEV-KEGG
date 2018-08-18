@@ -1084,6 +1084,14 @@ class Neofunctionalisation():
         else:
             return True
     
+    def toHtml(self, short = False):
+        """
+        Get the string representation as an HTML line.
+        """
+        enzymePair = self.enzymePair
+        ecPair = self.getEcNumbers()
+        return '<td>' + enzymePair[0].toHtml() + '<td>' + ',&nbsp;'.join([ec.toHtml(short) for ec in sorted(ecPair[0])]) + '</td></td><td><-></td><td>'+ enzymePair[1].toHtml() + '<td>' + ',&nbsp;'.join([ec.toHtml(short) for ec in sorted(ecPair[1])]) + '</td></td>'
+    
     def __str__(self):
         enzymePair = self.enzymePair
         ecPair = self.getEcNumbers()
@@ -1382,6 +1390,12 @@ class FunctionChange():
             However, wildcards do **not** match numbers: 1.2.3.4 and 1.2.3.- returns 1!
         """
         return 4 - self.ecA.matchingLevels(self.ecB, wildcardMatchesNumber = False)
+    
+    def toHtml(self, short = False):
+        """
+        Get the string representation as an HTML line.
+        """
+        return '<td>' + self.ecPair[0].toHtml(short) + '</td><td><-></td><td>' + self.ecPair[1].toHtml(short) + '</td>'
     
     def __str__(self):
         return self.ecPair.__str__()

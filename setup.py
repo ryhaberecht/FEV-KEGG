@@ -5,9 +5,12 @@ from version import __version__
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
+# Get the long description from the README and CHANGELOG files
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+    readme = f.read()
+with open(path.join(here, 'CHANGELOG.rst'), encoding='utf-8') as f:
+    changelog = f.read()
+long_description = readme + changelog
 
 setup(
     name='FEV_KEGG',  # Required
@@ -55,7 +58,8 @@ setup(
                       'tqdm',
                       'beautifulsoup4',
                       'retrying',
-                      'appdirs'],
+                      'appdirs',
+                      'yattag'],
     
     extras_require={  # Optional
         'python34': ['typing'], # only required in Python == 3.4
@@ -63,7 +67,7 @@ setup(
         'draw_window': ['matplotlib'],
         },
     
-    python_requires='~=3.4',
+    python_requires='~=3.4', # Python >=3.4, but not 4.x
 
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/ryhaberecht/FEV-KEGG/issues',

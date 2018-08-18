@@ -1142,7 +1142,7 @@ class Group(object):
 	
 	
 	
-	def collectiveEcGraph(self, noMultifunctional = settings.defaultNoMultifunctional, addCount = False, keepOnHeap = True) -> SubstanceEcGraph:
+	def collectiveEcGraph(self, noMultifunctional = settings.defaultNoMultifunctional, addCount = False, keepOnHeap = True, addEcDescriptions = False) -> SubstanceEcGraph:
 		"""
 		The collective of all SubstanceEcGraphs, by union operation, from all organisms in this group.
 		
@@ -1206,6 +1206,9 @@ class Group(object):
 			collectiveGraph.name = 'Collective EC graph'
 		else:
 			collectiveGraph.name = 'Collective EC graph ' + self.name
+			
+		if addEcDescriptions is True:
+			collectiveGraph.addEcDescriptions()
 		
 		if keepOnHeap is True: # shall keep the result on heap
 			# save the calculated result on heap
