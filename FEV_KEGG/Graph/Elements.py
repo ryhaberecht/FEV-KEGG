@@ -200,9 +200,9 @@ class Enzyme(Element):
         ----------
         self.organismAbbreviation : str
         self.geneName : str
-        self.geneID : :class:`GeneID`
+        self.geneID : GeneID
         self.name : str
-        self.ecNumbers : Set[:class:`EcNumber`]
+        self.ecNumbers : Set[EcNumber]
         self.description : str
             
         Raises
@@ -277,6 +277,58 @@ class Enzyme(Element):
         """
         return cls(organismAbbreviation = gene.organismAbbreviation, geneName = gene.number, ecNumberStrings = gene.ecNumbers, name = gene.name, description = gene.definition)
     
+    def __lt__(self, other):
+        
+        # sort by EC number first
+        selfEcList = list(self.ecNumbers)
+        otherEcList = list(other.ecNumbers)
+
+        if selfEcList == otherEcList:
+            # then by gene ID
+            return self.uniqueID < other.uniqueID
+
+        else:
+            return selfEcList < otherEcList
+    
+    def __gt__(self, other):
+        
+        # sort by EC number first
+        selfEcList = list(self.ecNumbers)
+        otherEcList = list(other.ecNumbers)
+
+        if selfEcList == otherEcList:
+            # then by gene ID
+            return self.uniqueID > other.uniqueID
+
+        else:
+            return selfEcList > otherEcList
+    
+    def __le__(self, other):
+        
+        # sort by EC number first
+        selfEcList = list(self.ecNumbers)
+        otherEcList = list(other.ecNumbers)
+
+        if selfEcList == otherEcList:
+            # then by gene ID
+            return self.uniqueID <= other.uniqueID
+
+        else:
+            return selfEcList <= otherEcList
+    
+    def __ge__(self, other):
+        
+        # sort by EC number first
+        selfEcList = list(self.ecNumbers)
+        otherEcList = list(other.ecNumbers)
+
+        if selfEcList == otherEcList:
+            # then by gene ID
+            return self.uniqueID >= other.uniqueID
+
+        else:
+            return selfEcList >= otherEcList
+    
 
 class EnzymeComplete(Enzyme):
     
@@ -322,9 +374,11 @@ class EcNumber(Element):
         Attributes
         ----------
         self.ecNumberString : str
-            E.g. '4.2.3.1'.
+            E.g. '4.2.3.-'.
         self.ecNumberLevels : List[str]
-            E.g. ['4', '2', '3', '1'].
+            E.g. ['4', '2', '3', '-'].
+        self.ecNumberLevelsInteger : List[int]
+            E.g. [4, 2, 3, -1]. A wildcard is translated to -1.
         self.description : str
             Descriptive name of the enzymes behind this EC number. May likely be *None*. Usually a list of synonymous names.
         self.name : str
@@ -350,6 +404,7 @@ class EcNumber(Element):
         # save object attributes
         self.ecNumberString = self.uniqueID
         self.ecNumberLevels = self.ecNumberString.split('.')
+        self._ecNumberLevelsInteger = [-1 if level == EcNumber.WILDCARD else int(level) for level in self.ecNumberLevels]
         self.description = None
         self.name = None
         self.reaction = None
@@ -370,6 +425,12 @@ class EcNumber(Element):
             If the resulting EC number is not formatted correctly.
         """
         return cls('.'.join(ecNumberLevels))
+    
+    @property
+    def ecNumberLevelsInteger(self) -> List[int]:
+        if not hasattr(self, '_ecNumberLevelsInteger'):
+            self._ecNumberLevelsInteger = [-1 if level == EcNumber.WILDCARD else int(level) for level in self.ecNumberLevels]
+        return self._ecNumberLevelsInteger
     
     def contains(self, ecNumber: 'EcNumber') -> bool:
         """
@@ -577,6 +638,18 @@ class EcNumber(Element):
                 ecNumber.description = ecEnzyme.description
                 ecNumber.name = ecEnzyme.name
                 ecNumber.reaction = ecEnzyme.reaction
+    
+    def __lt__(self, other):
+        return self.ecNumberLevelsInteger < other.ecNumberLevelsInteger
+    
+    def __gt__(self, other):
+        return self.ecNumberLevelsInteger > other.ecNumberLevelsInteger
+    
+    def __le__(self, other):
+        return self.ecNumberLevelsInteger <= other.ecNumberLevelsInteger
+    
+    def __ge__(self, other):
+        return self.ecNumberLevelsInteger >= other.ecNumberLevelsInteger
 
     
     

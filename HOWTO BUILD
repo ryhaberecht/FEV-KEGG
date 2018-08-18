@@ -17,17 +17,6 @@ sphinx-apidoc -f -e -o ./docs/source ./FEV_KEGG
 rm ./docs/source/modules.rst
 make -C docs html
 
-Upload to GitHub
-----------------
-# commit locally
-git add .
-git commit -m "[Update comment]"
-# push to GitHub
-git push
-# add new version tag
-git tag v[version]
-git push --tags
-
 Upload to PyPI
 --------------
 #pip install twine
@@ -41,6 +30,19 @@ python setup.py bdist_wheel
 
 # upload to PyPI
 twine upload dist/FEV_KEGG-[version]*
+
+Upload to GitHub
+----------------
+# commit locally
+git add .
+git commit -m "[Update comment]"
+
+# push to GitHub
+git push
+
+# add new version tag
+git tag v[version]
+git push --tags
 
 Deactivate virtualenv
 ---------------------

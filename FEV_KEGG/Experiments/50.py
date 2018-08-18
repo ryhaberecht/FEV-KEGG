@@ -2816,7 +2816,7 @@ if __name__ == '__main__':
         output.append('')
         
         #-     print size of each core metabolism and "neofunctionalised" ECs, including their contribution to redundancy
-        cladeAEcGraph = clade.coreMetabolism()
+        cladeAEcGraph = clade.coreMetabolism(majorityPercentageCoreMetabolism)
         cladeAEcCount = len(cladeAEcGraph.getECs())
         output.append( 'core metabolism ECs: ' + str(cladeAEcCount) )
         output.append('')

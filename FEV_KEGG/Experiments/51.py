@@ -19,7 +19,7 @@ Result
 
 ::
     
-    [see file Archaea.html]
+    [see file Archaea_Neofunctionalisations-For-FunctionChange.html]
 
 Conclusion
 ----------
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     neofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation)
 
     #- export to HTML, including links and further info
-    dictToHtmlFile(neofunctionalisationsForFunctionChange, clade.ncbiNames[0], byValueFirst=False, inCacheFolder=True, addEcDescriptions = True)
+    dictToHtmlFile(neofunctionalisationsForFunctionChange, clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions = True)
     

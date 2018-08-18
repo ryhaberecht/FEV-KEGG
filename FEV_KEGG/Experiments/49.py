@@ -787,7 +787,7 @@ if __name__ == '__main__':
     output.append('')
     
     #- get core metabolism
-    cladeAEcGraph = cladeA.coreMetabolism()
+    cladeAEcGraph = cladeA.coreMetabolism(majorityPercentageCoreMetabolism)
     cladeAEcCount = len(cladeAEcGraph.getECs())
     output.append( 'core metabolism ECs: ' + str(cladeAEcCount) )
     output.append('')

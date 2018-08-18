@@ -81,7 +81,7 @@ if __name__ == '__main__':
     output = ['']
 
     #- get clade
-    cladeA = getCladeA()
+    clade = getCladeA()
     majorityPercentageCoreMetabolism = 80
     majorityPercentageNeofunctionalisation = 0
     
@@ -90,37 +90,37 @@ if __name__ == '__main__':
     output.append( 'core metabolism majority: ' + str(majorityPercentageCoreMetabolism) + '%' )
     output.append( 'neofunctionalisation majority: ' + str(majorityPercentageNeofunctionalisation) + '% (this means that gene duplication within a single organism is enough)' )
     output.append('')
-    output.append(', '.join(cladeA.ncbiNames) + ':')
+    output.append(', '.join(clade.ncbiNames) + ':')
     output.append('')
     
     #- get core metabolism
-    cladeAEcGraph = cladeA.coreMetabolism()
-    cladeAEcCount = len(cladeAEcGraph.getECs())
-    output.append( 'core metabolism ECs: ' + str(cladeAEcCount) )
+    cladeEcGraph = clade.coreMetabolism(majorityPercentageCoreMetabolism)
+    cladeEcCount = len(cladeEcGraph.getECs())
+    output.append( 'core metabolism ECs: ' + str(cladeEcCount) )
     output.append('')
     
     #- calculate "neofunctionalised" ECs
-    cladeANeofunctionalisedMetabolismSet = cladeA.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation).getECs()
-    cladeANeofunctionalisationsForFunctionChange = cladeA.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation)
+    cladeNeofunctionalisedMetabolismSet = clade.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation).getECs()
+    cladeNeofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation)
     
     #- calculate redundancy
-    cladeARedundancy = Redundancy(cladeAEcGraph)
-    cladeARedundancyContribution = RedundancyContribution(cladeARedundancy, cladeANeofunctionalisedMetabolismSet)
+    cladeRedundancy = Redundancy(cladeEcGraph)
+    cladeRedundancyContribution = RedundancyContribution(cladeRedundancy, cladeNeofunctionalisedMetabolismSet)
     
     for redundancyType in redundancyTypes:
         
-        cladeARobustnessContributedECsForContributingNeofunctionalisedEC = cladeARedundancyContribution.getContributedKeysForSpecial(redundancyType)
-        cladeARobustnessContributingNeofunctionalisedECs = set(cladeARobustnessContributedECsForContributingNeofunctionalisedEC.keys())
+        cladeRobustnessContributedECsForContributingNeofunctionalisedEC = cladeRedundancyContribution.getContributedKeysForSpecial(redundancyType)
+        cladeRobustnessContributingNeofunctionalisedECs = set(cladeRobustnessContributedECsForContributingNeofunctionalisedEC.keys())
         
         #- REPEAT for each function change consisting of "neofunctionalised" ECs, which also contribute to redundancy
-        output.append( '"neofunctionalised" ECs: ' + str(len(cladeANeofunctionalisedMetabolismSet)) + ' (' + str(Percent.getPercentStringShort(len(cladeANeofunctionalisedMetabolismSet), cladeAEcCount, 0)) + '%)' )
+        output.append( '"neofunctionalised" ECs: ' + str(len(cladeNeofunctionalisedMetabolismSet)) + ' (' + str(Percent.getPercentStringShort(len(cladeNeofunctionalisedMetabolismSet), cladeEcCount, 0)) + '%)' )
         
         robustnessContributingNeofunctionalisations = dict()
         
-        for functionChange, neofunctionalisations in cladeANeofunctionalisationsForFunctionChange.items():
+        for functionChange, neofunctionalisations in cladeNeofunctionalisationsForFunctionChange.items():
             #-     report enzyme pairs of neofunctionalisations, which caused the EC to be considered "neofunctionalised", and are in return contributing to redundancy        
             
-            if functionChange.ecA in cladeARobustnessContributingNeofunctionalisedECs or functionChange.ecB in cladeARobustnessContributingNeofunctionalisedECs: # function change contributes to robustness
+            if functionChange.ecA in cladeRobustnessContributingNeofunctionalisedECs or functionChange.ecB in cladeRobustnessContributingNeofunctionalisedECs: # function change contributes to robustness
                 
                 for neofunctionalisation in neofunctionalisations:
                     currentSetOfContributedECs = robustnessContributingNeofunctionalisations.get(neofunctionalisation, None)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
                         robustnessContributingNeofunctionalisations[neofunctionalisation] = currentSetOfContributedECs
                     
                     for ec in functionChange.ecPair:
-                        contributedECs = cladeARobustnessContributedECsForContributingNeofunctionalisedEC.get(ec, None)
+                        contributedECs = cladeRobustnessContributedECsForContributingNeofunctionalisedEC.get(ec, None)
                         if contributedECs is not None:
                             currentSetOfContributedECs.update(contributedECs)
         
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         for contributedEC in neofunctionalisationsForContributedEC.keys():
             ecNumbers.add( contributedEC )
         
-        dictToHtmlFile(neofunctionalisationsForContributedEC, cladeA.ncbiNames[0] + '_' + redundancyType.name + '_Neofunctionalisations-For-Contributed-EC.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions = ecNumbers)
+        dictToHtmlFile(neofunctionalisationsForContributedEC, clade.ncbiNames[0] + '_' + redundancyType.name + '_Neofunctionalisations-For-Contributed-EC.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions = ecNumbers)
   
     
     

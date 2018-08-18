@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     readme = f.read()
 with open(path.join(here, 'CHANGELOG.rst'), encoding='utf-8') as f:
     changelog = f.read()
-long_description = readme + changelog
+long_description = readme + '\n\n' + changelog
 
 setup(
     name='FEV_KEGG',  # Required

@@ -1112,16 +1112,132 @@ class Neofunctionalisation():
         return self.enzymePair.__hash__()
     
     def __lt__(self, other):
-        return self.enzymePair < other.enzymePair
+        
+        # sort by EC number first
+        selfEnzyme1 = self.enzymePair[0]
+        selfEnzyme2 = self.enzymePair[1]
+        
+        selfEnzyme1EcList = list(selfEnzyme1.ecNumbers)
+        selfEnzyme2EcList = list(selfEnzyme2.ecNumbers)
+        
+        otherEnzyme1 = other.enzymePair[0]
+        otherEnzyme2 = other.enzymePair[1]
+        
+        otherEnzyme1EcList = list(otherEnzyme1.ecNumbers)
+        otherEnzyme2EcList = list(otherEnzyme2.ecNumbers)
+
+        if selfEnzyme1EcList == otherEnzyme1EcList:
+            
+            if selfEnzyme2EcList == otherEnzyme2EcList:
+                
+                # then by gene ID
+                if selfEnzyme1.uniqueID == otherEnzyme1.uniqueID:
+                    return selfEnzyme2.uniqueID < otherEnzyme2.uniqueID
+                
+                else:
+                    return selfEnzyme1.uniqueID < otherEnzyme1.uniqueID
+                
+            else:
+                return selfEnzyme2EcList < otherEnzyme2EcList
+
+        else:
+            return selfEnzyme1EcList < otherEnzyme1EcList
     
     def __gt__(self, other):
-        return self.enzymePair > other.enzymePair
+        
+        # sort by EC number first
+        selfEnzyme1 = self.enzymePair[0]
+        selfEnzyme2 = self.enzymePair[1]
+        
+        selfEnzyme1EcList = list(selfEnzyme1.ecNumbers)
+        selfEnzyme2EcList = list(selfEnzyme2.ecNumbers)
+        
+        otherEnzyme1 = other.enzymePair[0]
+        otherEnzyme2 = other.enzymePair[1]
+        
+        otherEnzyme1EcList = list(otherEnzyme1.ecNumbers)
+        otherEnzyme2EcList = list(otherEnzyme2.ecNumbers)
+
+        if selfEnzyme1EcList == otherEnzyme1EcList:
+            
+            if selfEnzyme2EcList == otherEnzyme2EcList:
+                
+                # then by gene ID
+                if selfEnzyme1.uniqueID == otherEnzyme1.uniqueID:
+                    return selfEnzyme2.uniqueID > otherEnzyme2.uniqueID
+                
+                else:
+                    return selfEnzyme1.uniqueID > otherEnzyme1.uniqueID
+                
+            else:
+                return selfEnzyme2EcList > otherEnzyme2EcList
+
+        else:
+            return selfEnzyme1EcList > otherEnzyme1EcList
     
     def __le__(self, other):
-        return self.enzymePair <= other.enzymePair
+        
+        # sort by EC number first
+        selfEnzyme1 = self.enzymePair[0]
+        selfEnzyme2 = self.enzymePair[1]
+        
+        selfEnzyme1EcList = list(selfEnzyme1.ecNumbers)
+        selfEnzyme2EcList = list(selfEnzyme2.ecNumbers)
+        
+        otherEnzyme1 = other.enzymePair[0]
+        otherEnzyme2 = other.enzymePair[1]
+        
+        otherEnzyme1EcList = list(otherEnzyme1.ecNumbers)
+        otherEnzyme2EcList = list(otherEnzyme2.ecNumbers)
+
+        if selfEnzyme1EcList == otherEnzyme1EcList:
+            
+            if selfEnzyme2EcList == otherEnzyme2EcList:
+                
+                # then by gene ID
+                if selfEnzyme1.uniqueID == otherEnzyme1.uniqueID:
+                    return selfEnzyme2.uniqueID <= otherEnzyme2.uniqueID
+                
+                else:
+                    return selfEnzyme1.uniqueID <= otherEnzyme1.uniqueID
+                
+            else:
+                return selfEnzyme2EcList <= otherEnzyme2EcList
+
+        else:
+            return selfEnzyme1EcList <= otherEnzyme1EcList
     
     def __ge__(self, other):
-        return self.enzymePair >= other.enzymePair
+        
+        # sort by EC number first
+        selfEnzyme1 = self.enzymePair[0]
+        selfEnzyme2 = self.enzymePair[1]
+        
+        selfEnzyme1EcList = list(selfEnzyme1.ecNumbers)
+        selfEnzyme2EcList = list(selfEnzyme2.ecNumbers)
+        
+        otherEnzyme1 = other.enzymePair[0]
+        otherEnzyme2 = other.enzymePair[1]
+        
+        otherEnzyme1EcList = list(otherEnzyme1.ecNumbers)
+        otherEnzyme2EcList = list(otherEnzyme2.ecNumbers)
+
+        if selfEnzyme1EcList == otherEnzyme1EcList:
+            
+            if selfEnzyme2EcList == otherEnzyme2EcList:
+                
+                # then by gene ID
+                if selfEnzyme1.uniqueID == otherEnzyme1.uniqueID:
+                    return selfEnzyme2.uniqueID >= otherEnzyme2.uniqueID
+                
+                else:
+                    return selfEnzyme1.uniqueID >= otherEnzyme1.uniqueID
+                
+            else:
+                return selfEnzyme2EcList >= otherEnzyme2EcList
+
+        else:
+            return selfEnzyme1EcList >= otherEnzyme1EcList
 
 
 

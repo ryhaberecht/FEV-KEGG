@@ -1,11 +1,18 @@
 """
 Context
 -------
-In :mod:`49`, we did this before, but this time we export into pretty HTML.
+Combining the list of all neofunctionalisations, sorted by their function change, from :mod:`51`, 
+and the list of neofunctionalisations contributing to robustness, sorted by the EC number they provide robustness for, from :mod:`53`.
+
+E-value also plays an important role in the number of neofunctionalisations reported, 
+because the bigger the E-value is, the easier two enzymes match as gene-duplicates, the higher the probability of a discovered function change, together resulting in a neofunctionalisation.
 
 Question
 --------
-Which neofunctionalised enzymes cause the core metabolism of Deltaproteobacteria to have increased redundancy? How much do they contribute?
+Which neofunctionalisations exist in the core metabolism of Archaea, using a certain E-value?
+Grouped by function change, sorted lexicographically, annotated with links to KEGG, annotated with human-readable names (if possible), and exported into an HTML file.
+
+Which neofunctionalised enzymes cause the core metabolism of Archaea to have increased redundancy?
 Grouped by contributed functions, sorted lexicographically, annotated with links to KEGG, annotated with human-readable names (if possible), and exported into an HTML file.
 
 Method
@@ -13,10 +20,12 @@ Method
 - get clade
 - get core metabolism
 - calculate "neofunctionalised" ECs
+- report neofunctionalisations
+-     print them into nice HTML
 - calculate redundancy
 - REPEAT for each "neofunctionalised" EC contributing to redundancy
 -     report enzyme pairs of neofunctionalisations, which caused the EC to be considered "neofunctionalised", and are in return contributing to redundancy
--     print them into nice HTML
+-         print them into nice HTML
 
 Result
 ------
@@ -26,25 +35,28 @@ Result
     core metabolism majority: 80%
     neofunctionalisation majority: 0% (this means that gene duplication within a single organism is enough)
     
-    Deltaproteobacteria:
+    Archaea:
     
-    core metabolism ECs: 228
+    core metabolism ECs: 114
     
-    "neofunctionalised" ECs: 36 (16%)
     
-    Neofunctionalisations contributing to robustness: 84
+    All neofunctionalisations: 1140
+        [see Archaea_Neofunctionalisations-For-FunctionChange.html]
+            
+    "neofunctionalised" ECs: 16 (14%)
     
-    [see file Deltaproteobacteria_ROBUSTNESS_Neofunctionalisations-For-Contributed-EC.html]
+    Neofunctionalisations contributing to robustness: 93 (8%)
+        [see Archaea_Neofunctionalisations-For-Contributed-EC.html]
     
 
 Conclusion
 ----------
-Much more useful than a plain text list of cryptic IDs.
-
-The well-known neofunctionalisation 2.6.1.1 <-> 2.6.1.9 does not occur here. 
-Maybe the core metabolism's majority percentage is too high, or both of the two EC numbers can only contribute to partial redundancy?
+Archaea do not seem to have many neofunctionalisations contributing to robustness.
+This might be limited by:
+- the size of the core metabolism, i.e. the majority percentage.
+- the E-value. The lower the E-value, the closer two enzymes' sequences have to match, for them to be recognised as gene-duplicated.
+    Using a higher E-value will greatly increase the number of neofunctionalisations reported. Of course, this will also increase the number of false-positives.
 """
-
 from FEV_KEGG.KEGG.File import cache
 from FEV_KEGG.Evolution.Clade import Clade
 from FEV_KEGG.Statistics import Percent
@@ -52,9 +64,9 @@ from FEV_KEGG.Robustness.Topology.Redundancy import RedundancyType, Redundancy, 
 from FEV_KEGG import settings
 from FEV_KEGG.Util.Util import dictToHtmlFile
 
-@cache(folder_path='experiments', file_name='deltaproteobacteria_clade')
-def getCladeA():
-    clade = Clade('Deltaproteobacteria')
+@cache(folder_path='experiments', file_name='archaea_clade')
+def getClade():
+    clade = Clade('Archaea')
     # pre-fetch collective metabolism into memory
     clade.collectiveMetabolism(excludeMultifunctionalEnzymes=settings.defaultNoMultifunctional)
     # pre-fetch collective enzyme metabolism into memory
@@ -66,11 +78,11 @@ if __name__ == '__main__':
     output = ['']
 
     #- get clade
-    clade = getCladeA()
+    clade = getClade()
     majorityPercentageCoreMetabolism = 80
     majorityPercentageNeofunctionalisation = 0
-    
-    redundancyType = RedundancyType.ROBUSTNESS
+    eValue = 1e-15
+    redundancyType = RedundancyType.ROBUSTNESS_BOTH
     
     output.append( 'core metabolism majority: ' + str(majorityPercentageCoreMetabolism) + '%' )
     output.append( 'neofunctionalisation majority: ' + str(majorityPercentageNeofunctionalisation) + '% (this means that gene duplication within a single organism is enough)' )
@@ -84,14 +96,31 @@ if __name__ == '__main__':
     output.append( 'core metabolism ECs: ' + str(cladeEcCount) )
     output.append('')
     
+    #- report neofunctionalisations
+    neofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
+    allNeofunctionalisations = set() # set of all neofunctionalisations, no matter which function change they belong to
+    for valueSet in neofunctionalisationsForFunctionChange.values():
+        allNeofunctionalisations.update( valueSet )
+
+    output.append('')
+    output.append( 'All neofunctionalisations: ' + str(len(allNeofunctionalisations)) )
+    
+    #-     print them into nice HTML
+    ecNumbers = set()
+    for functionChange in neofunctionalisationsForFunctionChange.keys():
+        ecNumbers.update( functionChange.ecPair )
+    dictToHtmlFile(neofunctionalisationsForFunctionChange, clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions=ecNumbers)
+    output.append( '\t[see ' + clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html]' )
+    output.append('')
+    
     #- calculate "neofunctionalised" ECs
-    cladeNeofunctionalisedMetabolismSet = clade.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation).getECs()
-    cladeNeofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation)
+    cladeNeofunctionalisedMetabolismSet = clade.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue).getECs()
+    cladeNeofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
     
     #- calculate redundancy
     cladeRedundancy = Redundancy(cladeEcGraph)
     cladeRedundancyContribution = RedundancyContribution(cladeRedundancy, cladeNeofunctionalisedMetabolismSet)
-    
+        
     cladeRobustnessContributedECsForContributingNeofunctionalisedEC = cladeRedundancyContribution.getContributedKeysForSpecial(redundancyType)
     cladeRobustnessContributingNeofunctionalisedECs = set(cladeRobustnessContributedECsForContributingNeofunctionalisedEC.keys())
     
@@ -118,7 +147,10 @@ if __name__ == '__main__':
                         currentSetOfContributedECs.update(contributedECs)
     
     output.append('')
-    output.append( 'Neofunctionalisations contributing to robustness: ' + str(len(robustnessContributingNeofunctionalisations)) )
+    output.append( 'Neofunctionalisations contributing to robustness: ' + str(len(robustnessContributingNeofunctionalisations)) + ' (' + str(Percent.getPercentStringShort(len(robustnessContributingNeofunctionalisations), len(allNeofunctionalisations), 0)) + '%)' )
+    output.append( '\t[see ' + clade.ncbiNames[0] + '_Neofunctionalisations-For-Contributed-EC.html]' )
+    output.append('')
+    output.append('')
     
     
     neofunctionalisationsForContributedEC = dict()
@@ -134,17 +166,15 @@ if __name__ == '__main__':
                 
             currentSetOfNeofunctionalisations.add(neofunctionalisation)
     
-    
+    #-         print them into nice HTML
     ecNumbers = set()
     for contributedEC in neofunctionalisationsForContributedEC.keys():
         ecNumbers.add( contributedEC )
     
-    dictToHtmlFile(neofunctionalisationsForContributedEC, clade.ncbiNames[0] + '_' + redundancyType.name + '_Neofunctionalisations-For-Contributed-EC.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions = ecNumbers)
-  
-    
-    
+    dictToHtmlFile(neofunctionalisationsForContributedEC, clade.ncbiNames[0] + '_Neofunctionalisations-For-Contributed-EC.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions=ecNumbers)
     
     
     
     for line in output:
         print( line )
+    
