@@ -50,14 +50,20 @@ class Element(object):
         """
         return "http://rest.kegg.jp/get/" + self.uniqueID
     
-    def toHtml(self, short = False):
+    def toHtml(self, short = False, noTd = False):
         """
         Get the Element's string representation surrounded by its URL as an HTML line.
         """
         if self.name is None or short is True:
-            return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a><td></td>"
+            if noTd is True:
+                return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a>"
+            else:
+                return "<td><a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a></td><td></td>"
         else:
-            return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a><td>(" + self.name + ")</td>"
+            if noTd is True:
+                return "<a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a>&nbsp;(" + self.name + ")"
+            else:
+                return "<td><a target='_blank' href='" + self.getUrl() + "'>" + self.__str__() + "</a></td><td>(" + self.name + ")</td>"
     
         
     def __str__(self):

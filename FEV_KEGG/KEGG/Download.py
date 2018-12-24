@@ -373,15 +373,19 @@ def downloadParalogs(geneID: 'GeneID') -> Tuple[int, List[SSDB.PreMatch]]:
 
 @retry(wait_exponential_multiplier=settings.retryDownloadBackoffFactor, wait_exponential_max=settings.retryDownloadBackoffMax, stop_max_delay=settings.retryDownloadMax, retry_on_exception=is_not_404) # do not retry on HTTP error 404, raise immediately instead
 def _downloadHomologs(geneIdString, organismAbbreviationString):
-    return str(urllib.request.urlopen('http://www.kegg.jp/ssdb-bin/ssdb_ortholog_view?org_gene=' + geneIdString + '&org=' + organismAbbreviationString, timeout=settings.downloadTimeoutSocket).read()).replace('\\n', '')
+    return str(urllib.request.urlopen('https://www.kegg.jp/ssdb-bin/ssdb_ortholog_view?org_gene=' + geneIdString + '&org=' + organismAbbreviationString, timeout=settings.downloadTimeoutSocket).read()).replace('\\n', '')
 
 AA_SEQ_LENGTH_REGEX_PATTERN = re.compile('\(([0-9]+) a\.a\.\)')
+NT_SEQ_LENGTH_REGEX_PATTERN = re.compile('\(([0-9]+) n\.t\.\)') # length in AA == length in NT / 3 - 1
 
 def _parseSsdbOrthologView(htmlString) -> Tuple[int, List[SSDB.PreMatch]]:
     
     try:
         html = BeautifulSoup(htmlString, 'html.parser')
-        searchedSequenceLength = int(AA_SEQ_LENGTH_REGEX_PATTERN.search(html.body.a.next_sibling).group(1))
+        searchedSequenceLengthMatch = AA_SEQ_LENGTH_REGEX_PATTERN.search(html.body.a.next_sibling)
+        if searchedSequenceLengthMatch is None: # length in amino acids not found, maybe it is given in nucleic acids
+            searchedSequenceLengthMatch = NT_SEQ_LENGTH_REGEX_PATTERN.search(html.body.a.next_sibling)
+        searchedSequenceLength = int(searchedSequenceLengthMatch.group(1))
         
         matches = []
         
@@ -412,7 +416,7 @@ def _parseSsdbOrthologView(htmlString) -> Tuple[int, List[SSDB.PreMatch]]:
         
         return (searchedSequenceLength, matches)
     
-    except BaseException as e:
+    except BaseException as _:
         return None
 
 
@@ -443,8 +447,8 @@ def downloadOrthologOverview(geneID: 'GeneID') -> Tuple[int, List[SSDB.Match]]:
     # parse HTML
     try:
         foundGenes = _parseSsdbBestView(data)
-    except IndexError:
-        print("\nIndexError when parsing ortholog overview of gene: " + str(geneID))
+    except (IndexError, ValueError, AttributeError):
+        print("\nError when parsing ortholog overview of gene: " + str(geneID))
         return None
     
     return foundGenes
@@ -453,11 +457,15 @@ def downloadOrthologOverview(geneID: 'GeneID') -> Tuple[int, List[SSDB.Match]]:
 def _downloadOrthologOverview(geneIdString):
     return str(urllib.request.urlopen('https://www.kegg.jp/ssdb-bin/ssdb_best_best?threshold=400&org_gene=' + geneIdString, timeout=settings.downloadTimeoutSocket).read()).replace('\\n', '')
 
+SSDB_OVERVIEW_REGEX = re.compile("\)\s*|\s*[\(]{0,1}\s*")
+
 def _parseSsdbBestView(htmlString) -> Tuple[int, List[SSDB.Match]]:
     
     html = BeautifulSoup(htmlString.replace('&#', ''), 'html.parser')
-    
-    searchedSequenceLength = int(AA_SEQ_LENGTH_REGEX_PATTERN.search(html.table.tr.text).group(1))
+    searchedSequenceLengthMatch = AA_SEQ_LENGTH_REGEX_PATTERN.search(html.table.tr.text)
+    if searchedSequenceLengthMatch is None: # length in amino acids not found, maybe it is given in nucleic acids
+        searchedSequenceLengthMatch = NT_SEQ_LENGTH_REGEX_PATTERN.search(html.table.tr.text)
+    searchedSequenceLength = int(searchedSequenceLengthMatch.group(1))
     
     matches = []
     
@@ -471,15 +479,17 @@ def _parseSsdbBestView(htmlString) -> Tuple[int, List[SSDB.Match]]:
         #print(lineHtml)
         foundGeneIdString = lineHtml.input['value']
         
-        textFields = lineHtml.text.split()#.replace('&', '').replace('#', '')
+#         textFields = lineHtml.text.split()#.replace('&', '').replace('#', '')
+        textFields = SSDB_OVERVIEW_REGEX.split(lineHtml.text)
+#         print(textFields)
         
         try:
-            length = int(textFields[-9])
-            swScore = int(textFields[-8])
+            length = int(textFields[-8])
+            swScore = int(textFields[-7])
             bitScore = float(textFields[-5])
             identity = float(textFields[-4])
             overlap= int(textFields[-3])
-        except IndexError:
+        except (IndexError, ValueError):
             print(line)
             raise
         

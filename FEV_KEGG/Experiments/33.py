@@ -90,7 +90,7 @@ if __name__ == '__main__':
         theirECnumbers.add( EcNumber(string) )
     
     taxonomy = NCBI.getTaxonomy()
-    organisms = taxonomy.getOrganismAbbreviationsByPath('Bacillus subtilis')
+    organisms = taxonomy.getOrganismAbbreviationsByPath('Bacillus subtilis', oneOrganismPerSpecies=False)
     group = Organism.Group( organisms )
     ourECnumbers = group.majorityEcGraph(majorityPercentage = 1, noMultifunctional = False).getECs()
     ourECnumbers = EcNumber.removeWildcards(ourECnumbers)

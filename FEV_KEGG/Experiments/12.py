@@ -1,17 +1,17 @@
 """
 Question
 --------
-Which EC numbers are not present in all Escherichia coli K-12 subspecies?
+Which EC numbers are not present in all Escherichia coli K-12 organisms?
 
 Method
 ------
-- Get all metabolic pathways of all E. coli species from KEGG.
-- For each species, combine all pathways to the metabolic network, by UNION operation.
+- Get all metabolic pathways of all E. coli K-12 organisms from KEGG.
+- For each organism, combine all pathways to the metabolic network, by UNION operation.
 - Convert this metabolic network into a substance-ecNumber graph.
-- Combine all species' networks to a single unified E. coli network, by UNION operation.
-- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
-- Subtract the consensus network from the E. coli network, by DIFFERENCE operation, leaving only substances and EC numbers that do not occur in all species.
-- Print all EC numbers that do not occur in all species.
+- Combine all organisms' networks to a single unified E. coli network, by UNION operation.
+- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
+- Subtract the consensus network from the E. coli network, by DIFFERENCE operation, leaving only substances and EC numbers that do not occur in all organisms.
+- Print all EC numbers that do not occur in all organisms.
 
 Result
 ------
@@ -91,7 +91,7 @@ Result
 
 Conclusion
 ----------
-Some EC numbers are not shared between subspecies.
+Some EC numbers are not shared between organisms.
 It could make sense to ignore incomplete EC numbers, as they may represent identical reactions on identical substances and could, thus, be counted twice.
 For example, 1.2.7.- might merely represent incomplete data, while the associated enzyme actually performs 1.2.7.1., causing a duplicate in the result list.
 """
@@ -101,35 +101,35 @@ import FEV_KEGG.KEGG.Organism
 
 if __name__ == '__main__':
     
-    #- Get all metabolic pathways of all E. coli species from KEGG.
-    eColiSpecies = FEV_KEGG.KEGG.Organism.Group('Escherichia coli K-12').getOrganisms()
+    #- Get all metabolic pathways of all E. coli organisms from KEGG.
+    eColiOrganisms = FEV_KEGG.KEGG.Organism.Group(searchString = 'Escherichia coli K-12').organisms
     
-    #- For each species, combine all pathways to the metabolic network, by UNION operation.
-    speciesEcGraphs = []
-    for species in eColiSpecies:
-        speciesPathways = species.getMetabolicPathways()
-        speciesSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(speciesPathways)
+    #- For each organism, combine all pathways to the metabolic network, by UNION operation.
+    organismEcGraphs = []
+    for organism in eColiOrganisms:
+        organismPathways = organism.getMetabolicPathways()
+        organismSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(organismPathways)
     
         #- Convert this metabolic network into a substance-ecNumber graph.
-        speciesSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(speciesSubstanceReactionGraph)
-        speciesSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(speciesSubstanceGeneGraph)
+        organismSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(organismSubstanceReactionGraph)
+        organismSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(organismSubstanceGeneGraph)
         
-        speciesEcGraphs.append(speciesSubstanceEcGraph)
+        organismEcGraphs.append(organismSubstanceEcGraph)
     
-    firstGraph = speciesEcGraphs.pop(0)
+    firstGraph = organismEcGraphs.pop(0)
     
-    #- Combine all species' networks to a single unified E. coli network, by UNION operation.
+    #- Combine all organisms' networks to a single unified E. coli network, by UNION operation.
     unifiedEcGraph = firstGraph
-    unifiedEcGraph = unifiedEcGraph.union(speciesEcGraphs)
+    unifiedEcGraph = unifiedEcGraph.union(organismEcGraphs)
     
-    #- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
+    #- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
     intersectedEcGraph = firstGraph
-    intersectedEcGraph = intersectedEcGraph.intersection(speciesEcGraphs)
+    intersectedEcGraph = intersectedEcGraph.intersection(organismEcGraphs)
     
-    #- Subtract the consensus network from the E. coli network, by DIFFERENCE operation, leaving only substances and EC numbers that do not occur in all species.
+    #- Subtract the consensus network from the E. coli network, by DIFFERENCE operation, leaving only substances and EC numbers that do not occur in all organisms.
     differenceEcGraph = unifiedEcGraph.difference(intersectedEcGraph)
     
-    #- Print all EC numbers that do not occur in all species.
+    #- Print all EC numbers that do not occur in all organisms.
     output = []
     for ecNumber in differenceEcGraph.getECs():
         output.append(ecNumber.__str__())

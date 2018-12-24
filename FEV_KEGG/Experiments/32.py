@@ -67,7 +67,7 @@ if __name__ == '__main__':
     taxonomy = NCBI.getTaxonomy()
             
     #-     get group of organisms 'Bacillus subtilis'
-    organisms = taxonomy.getOrganismAbbreviationsByPath('Bacillus subtilis')
+    organisms = taxonomy.getOrganismAbbreviationsByPath('Bacillus subtilis', oneOrganismPerSpecies=False)
     group = Organism.Group( organisms )
     
     #-     REPEAT for varying majority-percentages:

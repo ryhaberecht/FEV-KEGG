@@ -72,7 +72,7 @@ if __name__ == '__main__':
     
     #- get group of organisms 'Escherichia coli'
     taxonomy = NCBI.getTaxonomy()
-    group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Escherichia coli') )
+    group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Escherichia coli', oneOrganismPerSpecies=False) )
     
     #- REPEAT for varying majority-percentages:
     for percentage in [100, 90, 80, 70, 60, 50, 40, 30, 20, 10 , 1]:

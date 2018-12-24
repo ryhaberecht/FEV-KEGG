@@ -105,7 +105,7 @@ if __name__ == '__main__':
         
         if i == 1:
             #-     1. get group of organisms by clade 'Thaumarchaeota'
-            organisms = taxonomy.getOrganismAbbreviationsByPath('/Archaea/Thaumarchaeota')
+            organisms = taxonomy.getOrganismAbbreviationsByPath('/Archaea/Thaumarchaeota', oneOrganismPerSpecies=False)
             output.append( 'Thaumarchaeota:' )
             
         elif i == 2:

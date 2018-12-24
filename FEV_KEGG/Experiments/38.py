@@ -2,7 +2,7 @@
 Context
 -------
 The approach of building a consensus/majority graph of enzymes/EC numbers to find a core metabolism shared among several organisms has to be validated against previous research.
-One such previous research deals with Thermus thermophilus HB27, but not with its complete metabolism, not only the essential "core" parts. They enhance the information provided by the KEGG database with information from MetaCyc and, most importantly, from manual curation with organism specific knowledge.
+One such previous research deals with Thermus thermophilus HB27, but not with its complete metabolism, but only the essential "core" parts. They enhance the information provided by the KEGG database with information from MetaCyc and, most importantly, from manual curation with organism specific knowledge.
 Lee et al. (2014) list EC numbers in additional file 1 "12934_2014_968_MOESM1_ESM.xls".
 As with other validations before, we have to filter EC numbers which are outdated, or somehow not represented by KEGG's standard pathways. This is done here by restricting any EC number to the ones in NUKA, whis is done for both, their and our set of EC numbers.
 

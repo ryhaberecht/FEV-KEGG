@@ -123,7 +123,7 @@ def updateDictUpdatingValue(dictA, dictB):
     return dictA
 
 
-def dictToHtml(dictionary, byValueFirst = False, addEcDescriptions = False) -> str:
+def dictToHtml(dictionary, byValueFirst = False, addEcDescriptions = False, headingDescriptionForHeading = None) -> str:
     
     if addEcDescriptions is not False:        
         from FEV_KEGG.Graph.Elements import EcNumber
@@ -142,17 +142,37 @@ def dictToHtml(dictionary, byValueFirst = False, addEcDescriptions = False) -> s
                 with tag('p'):
                     with tag('table'):
                         doc.asis(heading.toHtml())
+                        
+                    if headingDescriptionForHeading is not None:
+                        headingDescription = headingDescriptionForHeading.get(heading, None)
+                        
+                        if headingDescription is not None:
+                            with tag('table'):
+                                with tag('tr'):
+                                    with tag('td'):
+                                        doc.asis('{')
+                                
+                                for line in headingDescription:
+                                    with tag('tr'):
+                                        doc.asis(line.toHtml(short = True))
+                                        
+                                with tag('tr'):
+                                    with tag('td'):
+                                        doc.asis('}')
                     
                     with tag('table'):
                         
                         for row in rows:
                             with tag('tr'):
                                 doc.asis(row.toHtml(short = True))
+                                
+                with tag('br'):
+                    pass
                             
     return doc.getvalue()
     
     
-def dictToHtmlFile(dictionary, file, byValueFirst = False, inCacheFolder = False, addEcDescriptions = False):
+def dictToHtmlFile(dictionary, file, byValueFirst = False, inCacheFolder = False, addEcDescriptions = False, headingDescriptionForHeading = None):
     """
     Parameters
     ----------
@@ -166,7 +186,7 @@ def dictToHtmlFile(dictionary, file, byValueFirst = False, inCacheFolder = False
     from FEV_KEGG import settings
     from FEV_KEGG.KEGG import File
     
-    htmlString = dictToHtml(dictionary, byValueFirst, addEcDescriptions)
+    htmlString = dictToHtml(dictionary, byValueFirst, addEcDescriptions, headingDescriptionForHeading)
     
     if not file.endswith('.html'):
         file += '.html'

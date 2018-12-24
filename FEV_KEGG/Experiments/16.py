@@ -43,6 +43,7 @@ Result
 Conclusion
 ----------
 Many unique enzyme functions are realised by multiple genes. Therefore, multiple genes have to be considered in researching enzyme function evolution.
+It is therefore best to usually only work on EC graphs, because redundant enzymes are not considered in the context of this work.
 """
 from FEV_KEGG.Graph.SubstanceGraphs import SubstanceReactionGraph, SubstanceGeneGraph, SubstanceEcGraph, SubstanceEnzymeGraph
 import FEV_KEGG.KEGG.Organism

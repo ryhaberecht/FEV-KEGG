@@ -65,10 +65,10 @@ if __name__ == '__main__':
         output.append( '\ntaxon exception: ' + str(exceptPaths) )
         
         #- get group of organisms 'Archaea/Thaumarchaeota'
-        group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea/Thaumarchaeota', exceptPaths = exceptPaths) )
+        group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea/Thaumarchaeota', exceptPaths = exceptPaths, oneOrganismPerSpecies=False) )
         
         #- get supergroup of organisms 'Archaea'
-        supergroup = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea', exceptPaths = exceptPaths) )
+        supergroup = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea', exceptPaths = exceptPaths, oneOrganismPerSpecies=False) )
         
         #- calculate new EC numbers occuring in group's core metabolism compared to supergroup's core metabolism
         newECs = group.consensusEcGraph(noMultifunctional = True).getECs().difference( supergroup.consensusEcGraph(noMultifunctional = True).getECs() )

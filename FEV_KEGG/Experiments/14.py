@@ -1,15 +1,15 @@
 """
 Question
 --------
-Which percentage of EC numbers is shared between all subspecies of Escherichia coli K-12?
+Which percentage of EC numbers is shared between all organisms of Escherichia coli K-12?
 
 Method
 ------
-- Get all metabolic pathways of all E. coli species from KEGG.
-- For each species, combine all pathways to the metabolic network, by UNION operation.
+- Get all metabolic pathways of all E. coli organisms from KEGG.
+- For each organisms, combine all pathways to the metabolic network, by UNION operation.
 - Convert this metabolic network into a substance-ecNumber graph.
-- Combine all species' networks to a single unified E. coli network, by UNION operation.
-- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
+- Combine all organisms' networks to a single unified E. coli network, by UNION operation.
+- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
 - Print number of EC numbers in the unified network -> numberUnified.
 - Print number of EC numbers in the consensus network -> numberConsensus.
 - Print percentage numberConsensus/numberUnified.
@@ -18,15 +18,15 @@ Result
 ------
 
 ::
-
-    unified: 763
-    consensus: 699
-    91.61205766710354%
+    
+    unified: 617
+    consensus: 560
+    90.76175040518638%
 
 Conclusion
 ----------
-About 91% of all EC numbers present in all known Escherichia coli K-12 subspecies occur in all subspecies. Thus, 9% of EC numbers only occur in some of the subspecies.
-This indicates that subspecies evolve by acquiring new enzymatic functionalities. Whether they stem from neofunctionalisation, horizontal gene transfer, or genesis remains to be investigated.
+About 91% of all EC numbers present in all known Escherichia coli K-12 organisms occur in all organisms. Thus, 9% of EC numbers only occur in some of the organisms.
+This indicates that organisms evolve by acquiring new enzymatic functionalities. Whether they stem from neofunctionalisation, horizontal gene transfer, or genesis remains to be investigated.
 """
 from FEV_KEGG.Graph.SubstanceGraphs import SubstanceReactionGraph, SubstanceGeneGraph, SubstanceEcGraph
 import FEV_KEGG.KEGG.Organism
@@ -34,30 +34,30 @@ import FEV_KEGG.KEGG.Organism
 
 if __name__ == '__main__':
     
-    #- Get all metabolic pathways of all E. coli species from KEGG.
-    eColiSpecies = FEV_KEGG.KEGG.Organism.Group('Escherichia coli K-12').getOrganisms()
+    #- Get all metabolic pathways of all E. coli organisms from KEGG.
+    eColiOrganisms = FEV_KEGG.KEGG.Organism.Group(searchString = 'Escherichia coli K-12').organisms
     
-    #- For each species, combine all pathways to the metabolic network, by UNION operation.
-    speciesEcGraphs = []
-    for species in eColiSpecies:
-        speciesPathways = species.getMetabolicPathways()
-        speciesSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(speciesPathways)
+    #- For each organism, combine all pathways to the metabolic network, by UNION operation.
+    organismEcGraphs = []
+    for organism in eColiOrganisms:
+        organismPathways = organism.getMetabolicPathways()
+        organismSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(organismPathways)
     
         #- Convert this metabolic network into a substance-ecNumber graph.
-        speciesSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(speciesSubstanceReactionGraph)
-        speciesSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(speciesSubstanceGeneGraph)
+        organismSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(organismSubstanceReactionGraph)
+        organismSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(organismSubstanceGeneGraph)
         
-        speciesEcGraphs.append(speciesSubstanceEcGraph)
+        organismEcGraphs.append(organismSubstanceEcGraph)
     
-    firstGraph = speciesEcGraphs.pop(0)
+    firstGraph = organismEcGraphs.pop(0)
     
-    #- Combine all species' networks to a single unified E. coli network, by UNION operation.
+    #- Combine all organisms' networks to a single unified E. coli network, by UNION operation.
     unifiedEcGraph = firstGraph
-    unifiedEcGraph = unifiedEcGraph.union(speciesEcGraphs)
+    unifiedEcGraph = unifiedEcGraph.union(organismEcGraphs)
     
-    #- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
+    #- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
     intersectedEcGraph = firstGraph
-    intersectedEcGraph = intersectedEcGraph.intersection(speciesEcGraphs)
+    intersectedEcGraph = intersectedEcGraph.intersection(organismEcGraphs)
     
     
     #- Print number of EC numbers in the unified network -> numberUnified.

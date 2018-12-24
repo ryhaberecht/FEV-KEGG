@@ -1,118 +1,64 @@
 """
 Question
 --------
-Which EC numbers are linked with neofunctionalisations in Deltaproteobacteria and Spirochaetes?
-How do the two groups compare?
+How many EC numbers in Deltaproteobacteria are (partially) redundant?
 
 Method
 ------
-- get both clades
-- calculate set of "neofunctionalised" ECs for Alphaproteobacteria
-- calculate set of "neofunctionalised" ECs for Betaproteobacteria
-- REPEAT for varying core metabolism majority-percentages:
--     overlap sets and print amount of EC numbers inside the intersection and falling off either side
+- get Deltaproteobacteria
+- get ECs
+- calculate redundancy
+- print number of redundant ECs, including percentage of all ECs, for all types of redundancy
 
 Result
 ------
 
 ::
-    
     core metabolism majority: 80%
-    neofunctionalisation majority: 0% (this means that gene duplication within a single organism is enough)
-    
+
     Deltaproteobacteria:
     
     core metabolism ECs: 228
     
-    "neofunctionalised" ECs: 36 (16%)
-    1.1.1.42
-    1.1.1.85
-    2.1.3.2
-    2.1.3.3
-    2.2.1.1
-    2.2.1.7
-    2.4.2.14
-    2.5.1.47
-    2.6.1.1
-    2.6.1.16
-    2.6.1.62
-    2.6.1.9
-    4.1.3.-
-    4.2.1.46
-    5.1.1.1
-    5.1.3.2
-    5.1.3.6
-    5.3.1.16
-    5.4.3.8
-    5.4.99.18
-    6.1.1.12
-    6.1.1.16
-    6.1.1.17
-    6.1.1.18
-    6.1.1.22
-    6.1.1.4
-    6.1.1.5
-    6.1.1.6
-    6.1.1.9
-    6.2.1.1
-    6.2.1.3
-    6.3.2.10
-    6.3.2.13
-    6.3.2.8
-    6.3.2.9
-    6.3.4.13
     
+    Robustness fully: 7.0%
+    Robustness partial: 4.8%
+    Robustness both: 11.8%
     
-    Spirochaetes:
+    Flexibility fully: 17.1%
+    Flexibility partial: 13.6%
+    Flexibility both: 30.7%
     
-    core metabolism ECs: 80
+    Target-flexibility fully: 21.9%
+    Target-flexibility partial: 22.8%
+    Target-flexibility both: 44.7%
     
-    "neofunctionalised" ECs: 10 (12%)
-    6.1.1.10
-    6.1.1.12
-    6.1.1.20
-    6.1.1.22
-    6.1.1.4
-    6.1.1.5
-    6.1.1.6
-    6.1.1.9
-    6.3.2.13
-    6.3.2.8
-    
-    
-    Comparison:
-    100%:   0       2       3
-    80%:    28      8       2
-    60%:    47      8       4
-    40%:    72      20      8
-    20%:    125     40      14
+    Source-flexibility fully: 40.8%
+    Source-flexibility partial: 24.6%
+    Source-flexibility both: 65.4%
+
 
 Conclusion
 ----------
-Deltaproteobacteria consistently have more "neofunctionalised" EC numbers, which is not surprising, as the core metabolism is much bigger.
-The same effect explains the constant increase in "neofunctionalised" EC numbers with growing core metabolism, due to lower majority-percentage.
-This indicates that neofunctionalisation is widespread and not limited to the most important parts of metabolism. However, there might still be a statistical which remains to be investigated.
+As expected, the occurence of redundancy increases with a more general definition.
 
-Occurence in these results above does not mean, that those ECs are actually "neofunctionalised" in all of the organisms! Because in this experiment, a single neofunctionalisation is enough to mark the associated ECs as "neofunctionalised".
-It might be interesting to increase the neofunctionalisation majority percentage, to only include ECs which have neofunctionalisations in x% of the clade's organisms. 
+However, it seems to be odd, at first, to have a much higher source-flexibility than target-flexibility.
+This might be explained by the idea that, in general, metabolism has a main direction, because its purpose is to take one heap of molecules and turn it into a more useful heap of molecules.
+This obviously only works if at least some enzymes only catalyse one direction of the reaction, the one towards the more useful molecule.
+If we presume this is the case, there have to be substances which are mostly consumed, likely in the center of the metabolic network, and substances which are mostly produced, 
+likely at the rim of the metabolic network. Substances mostly consumed are very likely to have redundant edges leading away from them, 
+but any intermediate product might not be as likely to be the intermediate product of another path.
+There is a similar case for end products: they are unlikely to be the end product of another path, but it might still be that their predecessor is the intermediate product of another path.
 """
 
 from FEV_KEGG.KEGG.File import cache
 from FEV_KEGG.Evolution.Clade import Clade
 from FEV_KEGG.Statistics import Percent
+from FEV_KEGG.Robustness.Topology.Redundancy import RedundancyType, Redundancy
 
 @cache(folder_path='experiments', file_name='deltaproteobacteria_clade')
-def getCladeA():
+def getClade():
     clade = Clade('Deltaproteobacteria')
-    # pre-fetch collective metabolism into memory
-    clade.collectiveMetabolism(excludeMultifunctionalEnzymes=True)
-    # pre-fetch collective enzyme metabolism into memory
-    clade.collectiveMetabolismEnzymes(excludeMultifunctionalEnzymes=True)
-    return clade
-
-@cache(folder_path='experiments', file_name='spirochaetes_clade')
-def getCladeB():
-    clade = Clade('Spirochaetes')
     # pre-fetch collective metabolism into memory
     clade.collectiveMetabolism(excludeMultifunctionalEnzymes=True)
     # pre-fetch collective enzyme metabolism into memory
@@ -121,73 +67,44 @@ def getCladeB():
 
 if __name__ == '__main__':
 
-    output = []
-    
-    cladeA = getCladeA()
-    cladeB = getCladeB()
-    
+    output = ['']
+
+    #- get Deltaproteobacteria
+    clade = getClade()
     majorityPercentageCoreMetabolism = 80
-    majorityPercentageNeofunctionalisation = 0    
     output.append( 'core metabolism majority: ' + str(majorityPercentageCoreMetabolism) + '%' )
-    output.append( 'neofunctionalisation majority: ' + str(majorityPercentageNeofunctionalisation) + '% (this means that gene duplication within a single organism is enough)' )
     output.append('')
-     
-     
-    # Clade A
-    output.append(', '.join(cladeA.ncbiNames) + ':')
+    output.append(', '.join(clade.ncbiNames) + ':')
     output.append('')
-    cladeAEcCount = len(cladeA.coreMetabolism(majorityPercentageCoreMetabolism).getECs())
-    output.append( 'core metabolism ECs: ' + str(cladeAEcCount) )
-    output.append('')
-      
-    cladeANeofunctionalisedMetabolismSet = cladeA.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation).getECs()
-        
-    cladeASortedList = list(cladeANeofunctionalisedMetabolismSet)
-    cladeASortedList.sort()
-       
-    output.append( '"neofunctionalised" ECs: ' + str(len(cladeASortedList)) + ' (' + str(Percent.getPercentStringShort(len(cladeASortedList), cladeAEcCount, 0)) + '%)' )
-    for ecNumber in cladeASortedList:
-        output.append( ecNumber )
-     
-     
-     
-     
-     
-    # Clade B
-    output.append('')
-    output.append('')
-    output.append(', '.join(cladeB.ncbiNames) + ':')
-    output.append('')
-    cladeBEcCount = len(cladeB.coreMetabolism(majorityPercentageCoreMetabolism).getECs())
-    output.append( 'core metabolism ECs: ' + str(cladeBEcCount) )
-    output.append('')
-     
-    cladeBNeofunctionalisedMetabolismSet = cladeB.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation).getECs()
-       
-    cladeBSortedList = list(cladeBNeofunctionalisedMetabolismSet)
-    cladeBSortedList.sort()
-      
-    output.append( '"neofunctionalised" ECs: ' + str(len(cladeBSortedList)) + ' (' + str(Percent.getPercentStringShort(len(cladeBSortedList), cladeBEcCount, 0)) + '%)' )
-    for ecNumber in cladeBSortedList:
-        output.append( ecNumber )
     
-    
-    
-    
-    # Clade comparison
+    #- get ECs
+    cladeEcGraph = clade.coreMetabolism(majorityPercentageCoreMetabolism)
+    cladeEcCount = len(cladeEcGraph.getECs())
+    output.append( 'core metabolism ECs: ' + str(cladeEcCount) )
     output.append('')
-    output.append('')
-    output.append('Comparison:')
     
-    for percentage in [100, 80, 60, 40, 20]:
-        
-        aECs = cladeA.neofunctionalisedECs(percentage).getECs()
-        bECs = cladeB.neofunctionalisedECs(percentage).getECs()
-        bothECs = aECs.intersection(bECs)
-        onlyAECs = aECs.difference(bECs)
-        onlyBECs = bECs.difference(aECs)
-        
-        output.append( str(percentage) + '%:\t' + str(len(onlyAECs)) + '\t' + str(len(bothECs)) + '\t' + str(len(onlyBECs)) )
+    #- calculate redundancy
+    cladeRedundancy = Redundancy(cladeEcGraph)
+    
+    #- print number of redundant ECs, including percentage of all ECs, for all types of redundancy
+    output.append('')
+    output.append( 'Robustness fully: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.ROBUSTNESS) ) )
+    output.append( 'Robustness partial: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.ROBUSTNESS_PARTIAL) ) )
+    output.append( 'Robustness both: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.ROBUSTNESS_BOTH) ) )
+    output.append('')
+    output.append( 'Flexibility fully: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.FLEXIBILITY) ) )
+    output.append( 'Flexibility partial: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.FLEXIBILITY_PARTIAL) ) )
+    output.append( 'Flexibility both: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.FLEXIBILITY_BOTH) ) )
+    output.append('')
+    output.append( 'Target-flexibility fully: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.TARGET_FLEXIBILITY) ) )
+    output.append( 'Target-flexibility partial: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.TARGET_FLEXIBILITY_PARTIAL) ) )
+    output.append( 'Target-flexibility both: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.TARGET_FLEXIBILITY_BOTH) ) )
+    output.append('')
+    output.append( 'Source-flexibility fully: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.SOURCE_FLEXIBILITY) ) )
+    output.append( 'Source-flexibility partial: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.SOURCE_FLEXIBILITY_PARTIAL) ) )
+    output.append( 'Source-flexibility both: ' + Percent.floatToPercentString(cladeRedundancy.getRedundancyRatio(RedundancyType.SOURCE_FLEXIBILITY_BOTH) ) )
+    output.append('')
+    
     
     for line in output:
         print( line )

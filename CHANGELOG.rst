@@ -19,3 +19,11 @@ Changelog
 - Improved sorting of neofunctionalisations. Now they sort by EC number first.
 - Improved sorting for enzymes. Now they sort by EC number first.
 - Improved sorting for EC numbers. Now they sort naturally, not lexicographically.
+
+1.1.3 (2019-01-07)
+------------------
+- Bug-fix: Improved parsing and error handling of gene description files.
+- Bug-fix: Fixed deprecated API-calls in older experiments.
+- Added experiment 45.
+- Fixed typos.
+- Master's thesis release!

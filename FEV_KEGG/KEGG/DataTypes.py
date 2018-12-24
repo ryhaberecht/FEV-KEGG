@@ -184,8 +184,17 @@ class Gene(object):
                             if 'complement' in currentContent[0]:
                                 self.positionIsComplement = True
                             
-                            self.positionFrom = int( split[0].translate(self.__class__._digit_keeper) )
-                            self.positionTo = int( split[1].translate(self.__class__._digit_keeper) )
+                            if len(split) == 0 or len(split) == 1 and (split[0] == 'X' or split[0] == 'Y' or split[0] == 'Unknown'):
+                                self.positionFrom = None
+                                self.positionTo = None
+                            
+                            elif len(split) == 1:
+                                self.positionFrom = int( split[0].translate(self.__class__._digit_keeper) )    
+                                self.positionTo = None
+                            
+                            else:
+                                self.positionFrom = int( split[0].translate(self.__class__._digit_keeper) )
+                                self.positionTo = int( split[1].translate(self.__class__._digit_keeper) )
                         
                         elif lastSection == 'AASEQ':
                             
@@ -218,6 +227,10 @@ class Gene(object):
             print( "Error while parsing a gene description into a KEGG.DataTypes.Gene object:" )
             print( content )
             raise
+        
+    def getGeneID(self) -> 'GeneID':
+        from FEV_KEGG.Graph.Elements import GeneID
+        return GeneID(self.organismAbbreviation + ':' + self.number)
 
 
 

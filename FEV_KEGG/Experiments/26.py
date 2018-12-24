@@ -55,10 +55,10 @@ if __name__ == '__main__':
     taxonomy = NCBI.getTaxonomy()
     
     #- get group of organisms 'Proteobacteria/Deltaproteobacteria/Desulfobacterales'
-    group = Group( taxonomy.getOrganismAbbreviationsByPath('Bacteria/Proteobacteria/Deltaproteobacteria/Desulfobacterales') )
+    group = Group( taxonomy.getOrganismAbbreviationsByPath('Bacteria/Proteobacteria/Deltaproteobacteria/Desulfobacterales', oneOrganismPerSpecies=False) )
     
     #- get supergroup of organisms 'Proteobacteria/Deltaproteobacteria'
-    supergroup = Group( taxonomy.getOrganismAbbreviationsByPath('Bacteria/Proteobacteria/Deltaproteobacteria') )
+    supergroup = Group( taxonomy.getOrganismAbbreviationsByPath('Bacteria/Proteobacteria/Deltaproteobacteria', oneOrganismPerSpecies=False) )
     
     #- calculate number of enzymes in the group, including multifunctional enzymes
     output.append( 'enzymes in group: ' + str( len( group.collectiveEnzymeGraph(noMultifunctional = False).getEnzymes() ) ) )

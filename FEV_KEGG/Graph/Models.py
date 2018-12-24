@@ -101,7 +101,7 @@ class MutablePath():
                 nextEdge = frozenset(nextEdge)
         
         self.path.append(nextEdge)
-        self.path.append(nextNode)    
+        self.path.append(nextNode)
     
     def __len__(self):
         return len(self.nodes)
@@ -176,7 +176,35 @@ class Path():#TODO: omptimise memory usage, especially when there are tens of th
                 edgesExpanded.update(edgeEntry)
         return frozenset(edgesExpanded)
         
-    
+    def toHtml(self, short = False):
+        html = ''
+        
+        arrow = "->"
+        openTd = "<td>"
+        closeTd = "</td>"
+        newLine = "<br/>"
+        
+        for index, step in enumerate(self.path):
+            
+            html += openTd
+            
+            if isinstance(step, Iterable):
+                
+                for element in step:
+                    html += element.toHtml(short = short, noTd = True) + newLine
+                    
+            else:
+                html += step.toHtml(short = short, noTd = True)
+            
+            html += closeTd
+            
+            if index < len(self.path) - 1:
+                html += openTd
+                html += arrow
+                html += closeTd
+        
+        return html
+            
     def __len__(self):
         return len(self.nodes)
     
@@ -1633,13 +1661,19 @@ class CommonGraphApi(object):
                     
                     for node in nodeList: # iterate over next nodes
                         edges = self.getEdges(fromNode = lastNode, toNode = node)
-                        if len(edges) > 0:
+                        
+                        if len(edges) > 0: # there are edges, continue path
                             keys = {edge[2] for edge in edges}
                             
                             if path is None: # first round
                                 path = MutablePath(lastNode, keys, node)
                             else: # subsequent rounds
                                 path.elongate(keys, node)
+                            
+                            lastNode = node # continue with next node
+                        
+                        else: # no edges found, this must not happen
+                            raise Exception("No edges found, even though there are supposed to be some. Bewitched, bothered, and bewildered.")
                     
                     if path is not None:
                         result.add(Path(path))
@@ -1713,13 +1747,19 @@ class CommonGraphApi(object):
                     
                     for node in nodeList: # iterate over next nodes
                         edges = self.getEdges(fromNode = lastNode, toNode = node)
-                        if len(edges) > 0:
+                        
+                        if len(edges) > 0: # there are edges, continue path
                             keys = {edge[2] for edge in edges}
                             
                             if path is None: # first round
                                 path = MutablePath(lastNode, keys, node)
                             else: # subsequent rounds
                                 path.elongate(keys, node)
+                            
+                            lastNode = node # continue with next node
+                        
+                        else: # no edges found, this must not happen
+                            raise Exception("No edges found, even though there are supposed to be some. Bewitched, bothered, and bewildered.")
                     
                     if path is not None:
                         result.add(Path(path))

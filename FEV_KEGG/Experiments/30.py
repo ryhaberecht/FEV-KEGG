@@ -81,7 +81,7 @@ Conclusion
 ----------
 Regarding the result at 1% of the representative group:
 There are 15 EC numbers which occur in Poot-Hernandez' but nowhere in our organisms.
-Looking at the EC numbers in detail, this is easily explained by outdated used by Pot-Hernandez:
+Looking at the EC numbers in detail, this is easily explained by outdated used by Poot-Hernandez:
 1.1.1.158   deleted 2013
 1.17.1.2    deleted 2016
 1.17.4.2    in none of the 40 organisms of today
@@ -112,7 +112,7 @@ But the difference is small, implying that the 40 organisms were well-selected r
 Still, however, there is a high number of EC numbers only found in their core metabolism. This might result from their methodology. 
 After creating the Enzymatic Step Sequences (ESS), they reduced the EC numbers in the ESS to contain only three levels, i.e. abstracting from substrate specificity keeping only reaction types. 
 Then, at some undocumented point, they translated the set of three-level EC numbers back to the original set of EC numbers. But this results in a list of EC numbers which reactions are preserved, 
-not which substrate specificity are reserved! In order to accurately follow their definition of preservation, we have to reduce both sets of EC numbers, ours and theirs, to their first three levels, 
+not which substrate specificities are preserved! In order to accurately follow their definition of preservation, we have to reduce both sets of EC numbers, ours and theirs, to their first three levels, 
 and then re-run the experiment.
 """
 from FEV_KEGG.Evolution.Taxonomy import NCBI
@@ -152,13 +152,13 @@ if __name__ == '__main__':
         elif i == 2:
             
             #-     2. get group of organisms 'Gammaproteobacteria'
-            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria')
+            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria', oneOrganismPerSpecies=False)
             output.append( '\nGammaproteobacteria:' )
             
         elif i == 3:
             
             #-     3. get group of organisms 'Gammaproteobacteria', excluding unclassified
-            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria', exceptPaths='unclassified')
+            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria', exceptPaths='unclassified', oneOrganismPerSpecies=False)
             output.append( '\nGammaproteobacteria without unclassified:' )
         
         group = Organism.Group( organisms )

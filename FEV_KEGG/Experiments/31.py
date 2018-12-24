@@ -106,7 +106,7 @@ if __name__ == '__main__':
         elif i == 2:
             
             #-     2. get group of organisms 'Gammaproteobacteria', excluding unclassified
-            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria', exceptPaths='unclassified')
+            organisms = taxonomy.getOrganismAbbreviationsByPath('Gammaproteobacteria', exceptPaths='unclassified', oneOrganismPerSpecies=False)
             output.append( '\nGammaproteobacteria without unclassified:' )
         
         group = Organism.Group( organisms )

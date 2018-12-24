@@ -1,6 +1,7 @@
 import re
 import time
 import urllib
+from socket import timeout
 
 from FEV_KEGG.lib.Biopython.KEGG.KGML import KGML_pathway, KGML_parser
 import jsonpickle
@@ -15,6 +16,7 @@ from FEV_KEGG.Util import Parallelism
 import concurrent.futures
 from FEV_KEGG.Util.Util import chunks
 import math
+from urllib.error import URLError
 
 
 class NoKnownPathwaysError(ValueError):
@@ -951,11 +953,11 @@ def getOrthologsBulk(geneIDs: Iterable[GeneID], comparisonOrganism: 'Iterable[Or
         If connection to KEGG fails.
     """
     if isinstance(comparisonOrganism, str):
-        organismAbbreviation = comparisonOrganism
+        organismAbbreviation = [comparisonOrganism]
     elif isinstance(comparisonOrganism, Iterable):
         organismAbbreviation = [x if isinstance(x, str) else x.nameAbbreviation for x in comparisonOrganism]
     else:
-        organismAbbreviation = comparisonOrganism.nameAbbreviation
+        organismAbbreviation = [comparisonOrganism.nameAbbreviation]
     
     # improve performance by first checking IF there is an ortholog in some organisms
     organismsWithOrthologsDict = hasOrthologsBulk(geneIDs, organismAbbreviation, eValue)
@@ -1089,7 +1091,7 @@ def getParalogsBulk(geneIDs: Iterable[GeneID], eValue: float = settings.defaultE
     return _filterHomologsBySignificanceBulk( _getHomologsBulk(geneIDs, comparisonOrganismString = None), eValue, onlyGeneID = False)
 
 def _getHomologsBulk(geneIDs: Iterable[GeneID], comparisonOrganismString = None, ignoreImpossiblyOrthologous = False): # -> Dict[GeneID, List[SSDB.Matching]]
-    
+
     if comparisonOrganismString is None:
         isParalog = True
     else:
@@ -1158,7 +1160,13 @@ def _getHomologsBulk(geneIDs: Iterable[GeneID], comparisonOrganismString = None,
                 iterator = tqdm.tqdm(iterator, total = len(matchingsToDownload), unit = ' matchings', position = tqdmPosition)
             
             for future in iterator:
-                matching = future.result()
+                
+                try:
+                    matching = future.result()
+                except URLError as error:
+                    if isinstance(error.reason, timeout):
+                        print('Download timed out eventually, maybe you need to increase the timeout limit under settings.downloadTimeout')
+                    raise
                 
                 if matching is None:
                     continue
@@ -1382,7 +1390,7 @@ def hasOrthologsBulk(geneIDs: Iterable[GeneID], comparisonOrganisms: 'Iterable[O
     URLError
         If connection to KEGG fails.
     """
-    if isinstance(comparisonOrganisms, Iterable):
+    if isinstance(comparisonOrganisms, Iterable) and not isinstance(comparisonOrganisms, str):
         organismAbbreviations = [x if isinstance(x, str) else x.nameAbbreviation for x in comparisonOrganisms]
     else:
         raise ValueError("'comparisonOrganism' must be an Iterable.")
@@ -1452,7 +1460,6 @@ def hasOrthologsBulk(geneIDs: Iterable[GeneID], comparisonOrganisms: 'Iterable[O
     result = dict()
     for orgsDict in dictList:
         result.update( orgsDict )
-    
     
     return result
     

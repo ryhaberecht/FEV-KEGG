@@ -11,7 +11,7 @@ Method
 - Convert to substance-ec graph
 - Get set of EC numbers for each graph.
 - Calculate difference of EC number sets.
-- Print genes (EC number).
+- Print EC numbers.
 
 Result
 ------

@@ -904,6 +904,7 @@ Further research shows the reasons for such strange results:
   eco01100 automatically includes the reactions performed by that enzyme into all possible positions of the global map, 
   even those positions inside a pathway which eco supposedly does not have. 
   Because the reaction acts on a different substrate in this "non-existing" pathway, it stands out in this experiment.
+  This is most likely not an error in KEGG's data, but a corner-case where our methodology fails to handle the data.
   Example: G09660 -> R07818 -> G13040 (gene eco:b1617)
   
 - The same reaction (same substrate and product) is marked as irreversible in a single pathway,

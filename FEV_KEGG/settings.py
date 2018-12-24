@@ -158,7 +158,7 @@ Should be used inside background processes. Depends on your computer.
 
 
 # parameters for retrying failed downloads
-downloadTimeout = 10
+downloadTimeout = 60
 """
 Time in seconds after which a blocking socket is considered failed.
 

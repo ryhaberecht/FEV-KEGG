@@ -1,28 +1,586 @@
 """
 Question
 --------
-Which EC numbers are present in all Escherichia coli K-12 subspecies?
+Which EC numbers are present in all Escherichia coli K-12 organisms?
 
 Method
 ------
-- Get all metabolic pathways of all E. coli species from KEGG.
-- For each species, combine all pathways to the metabolic network, by UNION operation.
+- Get all metabolic pathways of all E. coli organisms from KEGG.
+- For each organisms, combine all pathways to the metabolic network, by UNION operation.
 - Convert this metabolic network into a substance-ecNumber graph.
-- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
-- Print all EC numbers that occur in all species.
-- Print number of EC numbers that occur in each species combined, by UNION operation.
+- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
+- Print all EC numbers that occur in all organisms.
 
 Result
 ------
 
 ::
 
-    699 results
-    ...shortened
+    560 results
+    1.-.-.-
+    1.1.-.-
+    1.1.1.-
+    1.1.1.1
+    1.1.1.100
+    1.1.1.103
+    1.1.1.127
+    1.1.1.130
+    1.1.1.140
+    1.1.1.169
+    1.1.1.17
+    1.1.1.205
+    1.1.1.22
+    1.1.1.23
+    1.1.1.25
+    1.1.1.262
+    1.1.1.267
+    1.1.1.282
+    1.1.1.290
+    1.1.1.336
+    1.1.1.350
+    1.1.1.37
+    1.1.1.38
+    1.1.1.380
+    1.1.1.40
+    1.1.1.42
+    1.1.1.6
+    1.1.1.60
+    1.1.1.77
+    1.1.1.86
+    1.1.1.94
+    1.1.2.3
+    1.1.5.12
+    1.1.5.2
+    1.1.5.3
+    1.1.5.4
+    1.1.98.6
+    1.1.99.1
+    1.11.1.21
+    1.11.1.6
+    1.11.1.9
+    1.12.99.6
+    1.13.11.16
+    1.14.12.19
+    1.14.13.127
+    1.14.14.5
+    1.14.99.46
+    1.17.1.4
+    1.17.1.8
+    1.17.4.1
+    1.17.7.4
+    1.18.1.3
+    1.2.1.-
+    1.2.1.11
+    1.2.1.12
+    1.2.1.19
+    1.2.1.38
+    1.2.1.41
+    1.2.1.70
+    1.2.1.71
+    1.2.1.72
+    1.2.1.8
+    1.2.1.99
+    1.2.4.1
+    1.2.4.2
+    1.2.5.1
+    1.3.1.-
+    1.3.1.1
+    1.3.1.28
+    1.3.1.87
+    1.3.1.98
+    1.3.3.3
+    1.3.5.2
+    1.3.5.3
+    1.3.5.4
+    1.3.98.3
+    1.3.99.-
+    1.4.1.4
+    1.4.3.-
+    1.4.3.16
+    1.4.3.5
+    1.4.4.2
+    1.4.5.1
+    1.5.1.-
+    1.5.1.2
+    1.5.1.20
+    1.5.1.3
+    1.5.1.38
+    1.6.1.1
+    1.6.1.2
+    1.6.5.2
+    1.7.1.13
+    1.7.1.15
+    1.7.1.7
+    1.7.2.2
+    1.7.99.-
+    1.7.99.1
+    1.8.1.2
+    1.8.1.4
+    1.8.1.7
+    1.8.1.9
+    1.8.4.14
+    1.8.5.3
+    1.97.1.9
+    2.1.1.13
+    2.1.1.14
+    2.1.1.197
+    2.1.1.37
+    2.1.1.45
+    2.1.2.1
+    2.1.2.11
+    2.1.2.2
+    2.1.2.9
+    2.1.3.2
+    2.1.3.3
+    2.10.1.1
+    2.2.1.1
+    2.2.1.2
+    2.2.1.6
+    2.2.1.7
+    2.2.1.9
+    2.3.1.-
+    2.3.1.1
+    2.3.1.109
+    2.3.1.117
+    2.3.1.12
+    2.3.1.129
+    2.3.1.15
+    2.3.1.16
+    2.3.1.179
+    2.3.1.180
+    2.3.1.181
+    2.3.1.183
+    2.3.1.191
+    2.3.1.241
+    2.3.1.243
+    2.3.1.29
+    2.3.1.30
+    2.3.1.39
+    2.3.1.41
+    2.3.1.46
+    2.3.1.47
+    2.3.1.51
+    2.3.1.54
+    2.3.1.57
+    2.3.1.61
+    2.3.1.8
+    2.3.1.9
+    2.3.3.1
+    2.3.3.9
+    2.4.1.1
+    2.4.1.12
+    2.4.1.15
+    2.4.1.18
+    2.4.1.182
+    2.4.1.21
+    2.4.1.227
+    2.4.1.25
+    2.4.1.7
+    2.4.2.-
+    2.4.2.1
+    2.4.2.10
+    2.4.2.14
+    2.4.2.17
+    2.4.2.19
+    2.4.2.21
+    2.4.2.22
+    2.4.2.3
+    2.4.2.4
+    2.4.2.53
+    2.4.2.7
+    2.4.2.8
+    2.4.2.9
+    2.5.1.-
+    2.5.1.129
+    2.5.1.15
+    2.5.1.16
+    2.5.1.17
+    2.5.1.18
+    2.5.1.19
+    2.5.1.3
+    2.5.1.31
+    2.5.1.47
+    2.5.1.48
+    2.5.1.54
+    2.5.1.55
+    2.5.1.6
+    2.5.1.61
+    2.5.1.72
+    2.5.1.78
+    2.5.1.9
+    2.5.1.90
+    2.6.1.1
+    2.6.1.19
+    2.6.1.42
+    2.6.1.52
+    2.6.1.57
+    2.6.1.62
+    2.6.1.66
+    2.6.1.81
+    2.6.1.82
+    2.6.1.85
+    2.6.1.87
+    2.6.1.9
+    2.6.99.2
+    2.7.1.-
+    2.7.1.107
+    2.7.1.11
+    2.7.1.12
+    2.7.1.130
+    2.7.1.148
+    2.7.1.15
+    2.7.1.165
+    2.7.1.17
+    2.7.1.191
+    2.7.1.192
+    2.7.1.193
+    2.7.1.194
+    2.7.1.197
+    2.7.1.198
+    2.7.1.199
+    2.7.1.2
+    2.7.1.201
+    2.7.1.202
+    2.7.1.21
+    2.7.1.23
+    2.7.1.24
+    2.7.1.25
+    2.7.1.30
+    2.7.1.33
+    2.7.1.35
+    2.7.1.39
+    2.7.1.4
+    2.7.1.40
+    2.7.1.45
+    2.7.1.48
+    2.7.1.5
+    2.7.1.50
+    2.7.1.51
+    2.7.1.53
+    2.7.1.55
+    2.7.1.56
+    2.7.1.58
+    2.7.1.59
+    2.7.1.60
+    2.7.1.71
+    2.7.1.73
+    2.7.1.83
+    2.7.1.89
+    2.7.2.1
+    2.7.2.11
+    2.7.2.15
+    2.7.2.2
+    2.7.2.3
+    2.7.2.4
+    2.7.2.8
+    2.7.4.16
+    2.7.4.22
+    2.7.4.23
+    2.7.4.25
+    2.7.4.3
+    2.7.4.6
+    2.7.4.8
+    2.7.4.9
+    2.7.6.1
+    2.7.6.3
+    2.7.7.12
+    2.7.7.18
+    2.7.7.24
+    2.7.7.27
+    2.7.7.3
+    2.7.7.38
+    2.7.7.4
+    2.7.7.41
+    2.7.7.6
+    2.7.7.60
+    2.7.7.7
+    2.7.7.73
+    2.7.7.75
+    2.7.7.76
+    2.7.7.77
+    2.7.7.8
+    2.7.7.9
+    2.7.8.-
+    2.7.8.13
+    2.7.8.26
+    2.7.8.37
+    2.7.8.5
+    2.7.8.8
+    2.7.9.2
+    2.7.9.3
+    2.8.1.1
+    2.8.1.10
+    2.8.1.12
+    2.8.1.4
+    2.8.1.6
+    2.8.1.7
+    2.8.1.8
+    3.1.1.-
+    3.1.1.11
+    3.1.1.31
+    3.1.1.45
+    3.1.1.5
+    3.1.1.85
+    3.1.2.-
+    3.1.2.12
+    3.1.2.28
+    3.1.2.6
+    3.1.3.1
+    3.1.3.10
+    3.1.3.11
+    3.1.3.12
+    3.1.3.18
+    3.1.3.2
+    3.1.3.25
+    3.1.3.27
+    3.1.3.3
+    3.1.3.45
+    3.1.3.5
+    3.1.3.70
+    3.1.3.73
+    3.1.3.89
+    3.1.4.14
+    3.1.4.46
+    3.1.4.53
+    3.1.4.55
+    3.1.5.1
+    3.1.6.1
+    3.2.1.1
+    3.2.1.196
+    3.2.1.20
+    3.2.1.21
+    3.2.1.22
+    3.2.1.23
+    3.2.1.28
+    3.2.1.31
+    3.2.1.52
+    3.2.1.86
+    3.2.1.93
+    3.2.2.4
+    3.2.2.8
+    3.2.2.9
+    3.4.11.1
+    3.4.11.2
+    3.4.11.23
+    3.4.13.-
+    3.5.1.-
+    3.5.1.1
+    3.5.1.10
+    3.5.1.108
+    3.5.1.110
+    3.5.1.16
+    3.5.1.18
+    3.5.1.2
+    3.5.1.25
+    3.5.1.42
+    3.5.1.94
+    3.5.1.96
+    3.5.2.17
+    3.5.2.2
+    3.5.2.3
+    3.5.2.5
+    3.5.3.11
+    3.5.3.23
+    3.5.3.26
+    3.5.3.9
+    3.5.4.13
+    3.5.4.16
+    3.5.4.2
+    3.5.4.25
+    3.5.4.3
+    3.5.4.4
+    3.5.4.5
+    3.5.99.6
+    3.6.1.-
+    3.6.1.13
+    3.6.1.22
+    3.6.1.23
+    3.6.1.26
+    3.6.1.27
+    3.6.1.41
+    3.6.1.54
+    3.6.1.63
+    3.6.1.66
+    3.6.1.67
+    3.6.1.7
+    3.6.1.9
+    3.7.1.14
+    4.1.1.11
+    4.1.1.15
+    4.1.1.17
+    4.1.1.18
+    4.1.1.19
+    4.1.1.20
+    4.1.1.23
+    4.1.1.31
+    4.1.1.37
+    4.1.1.41
+    4.1.1.47
+    4.1.1.49
+    4.1.1.50
+    4.1.1.65
+    4.1.1.8
+    4.1.1.85
+    4.1.2.13
+    4.1.2.17
+    4.1.2.19
+    4.1.2.20
+    4.1.2.21
+    4.1.2.4
+    4.1.2.40
+    4.1.2.48
+    4.1.2.53
+    4.1.3.-
+    4.1.3.1
+    4.1.3.27
+    4.1.3.3
+    4.1.3.36
+    4.1.3.38
+    4.1.3.40
+    4.1.99.1
+    4.1.99.12
+    4.1.99.17
+    4.1.99.19
+    4.1.99.22
+    4.2.1.1
+    4.2.1.10
+    4.2.1.104
+    4.2.1.11
+    4.2.1.113
+    4.2.1.12
+    4.2.1.126
+    4.2.1.2
+    4.2.1.20
+    4.2.1.24
+    4.2.1.3
+    4.2.1.32
+    4.2.1.40
+    4.2.1.42
+    4.2.1.46
+    4.2.1.59
+    4.2.1.6
+    4.2.1.7
+    4.2.1.70
+    4.2.1.75
+    4.2.1.8
+    4.2.1.90
+    4.2.3.1
+    4.2.3.3
+    4.2.3.4
+    4.2.3.5
+    4.2.99.20
+    4.3.1.1
+    4.3.1.17
+    4.3.1.18
+    4.3.1.19
+    4.3.1.7
+    4.3.2.1
+    4.3.2.2
+    4.3.2.3
+    4.3.3.7
+    4.3.99.3
+    4.4.1.21
+    4.4.1.5
+    4.4.1.8
+    4.6.1.12
+    4.6.1.17
+    4.7.1.1
+    5.1.1.1
+    5.1.1.3
+    5.1.1.7
+    5.1.3.-
+    5.1.3.1
+    5.1.3.14
+    5.1.3.15
+    5.1.3.2
+    5.1.3.20
+    5.1.3.22
+    5.1.3.3
+    5.1.3.4
+    5.1.3.9
+    5.1.99.7
+    5.3.1.-
+    5.3.1.1
+    5.3.1.12
+    5.3.1.13
+    5.3.1.14
+    5.3.1.16
+    5.3.1.17
+    5.3.1.22
+    5.3.1.28
+    5.3.1.5
+    5.3.1.6
+    5.3.1.8
+    5.3.1.9
+    5.3.3.2
+    5.4.2.10
+    5.4.2.11
+    5.4.2.12
+    5.4.2.2
+    5.4.2.6
+    5.4.2.7
+    5.4.3.8
+    5.4.4.2
+    5.4.99.18
+    6.1.1.1
+    6.1.1.10
+    6.1.1.11
+    6.1.1.12
+    6.1.1.14
+    6.1.1.15
+    6.1.1.16
+    6.1.1.17
+    6.1.1.18
+    6.1.1.19
+    6.1.1.2
+    6.1.1.20
+    6.1.1.21
+    6.1.1.22
+    6.1.1.3
+    6.1.1.4
+    6.1.1.5
+    6.1.1.6
+    6.1.1.7
+    6.1.1.9
+    6.2.1.1
+    6.2.1.26
+    6.2.1.3
+    6.2.1.5
+    6.3.1.1
+    6.3.1.11
+    6.3.1.2
+    6.3.1.20
+    6.3.1.5
+    6.3.2.1
+    6.3.2.10
+    6.3.2.13
+    6.3.2.14
+    6.3.2.2
+    6.3.2.3
+    6.3.2.4
+    6.3.2.6
+    6.3.2.8
+    6.3.2.9
+    6.3.3.1
+    6.3.3.2
+    6.3.3.3
+    6.3.4.13
+    6.3.4.15
+    6.3.4.18
+    6.3.4.2
+    6.3.4.20
+    6.3.4.21
+    6.3.4.4
+    6.3.4.5
+    6.3.5.2
+    6.3.5.3
+    6.3.5.4
+    6.3.5.5
+    6.4.1.2
 
 Conclusion
 ----------
-Alls subspecies of E. coli K-12 share a high number of EC numbers.
+Alls organisms of E. coli K-12 share a high number of EC numbers.
 """
 from FEV_KEGG.Graph.SubstanceGraphs import SubstanceReactionGraph, SubstanceGeneGraph, SubstanceEcGraph
 import FEV_KEGG.KEGG.Organism
@@ -30,28 +588,28 @@ import FEV_KEGG.KEGG.Organism
 
 if __name__ == '__main__':
     
-    #- Get all metabolic pathways of all E. coli species from KEGG.
-    eColiSpecies = FEV_KEGG.KEGG.Organism.Group('Escherichia coli K-12').getOrganisms()
+    #- Get all metabolic pathways of all E. coli organisms from KEGG.
+    eColiOrganisms = FEV_KEGG.KEGG.Organism.Group(searchString = 'Escherichia coli K-12').organisms
     
-    #- For each species, combine all pathways to the metabolic network, by UNION operation.
-    speciesEcGraphs = []
-    for species in eColiSpecies:
-        speciesPathways = species.getMetabolicPathways()
-        speciesSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(speciesPathways)
+    #- For each organism, combine all pathways to the metabolic network, by UNION operation.
+    organismEcGraphs = []
+    for organism in eColiOrganisms:
+        organismPathways = organism.getMetabolicPathways()
+        organismSubstanceReactionGraph = SubstanceReactionGraph.fromPathway(organismPathways)
     
         #- Convert this metabolic network into a substance-ecNumber graph.
-        speciesSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(speciesSubstanceReactionGraph)
-        speciesSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(speciesSubstanceGeneGraph)
+        organismSubstanceGeneGraph = SubstanceGeneGraph.fromSubstanceReactionGraph(organismSubstanceReactionGraph)
+        organismSubstanceEcGraph = SubstanceEcGraph.fromSubstanceGeneGraph(organismSubstanceGeneGraph)
         
-        speciesEcGraphs.append(speciesSubstanceEcGraph)
+        organismEcGraphs.append(organismSubstanceEcGraph)
     
-    firstGraph = speciesEcGraphs.pop(0)
+    firstGraph = organismEcGraphs.pop(0)
     
-    #- Combine all species' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all species.
+    #- Combine all organisms' networks to a consensus network, by INTERSECT operation, leaving only substances and EC numbers that occur in all organisms.
     intersectedEcGraph = firstGraph
-    intersectedEcGraph = intersectedEcGraph.intersection(speciesEcGraphs)
+    intersectedEcGraph = intersectedEcGraph.intersection(organismEcGraphs)
     
-    #- Print all EC numbers that occur in all species.
+    #- Print all EC numbers that occur in all organisms.
     output = []
     for ecNumber in intersectedEcGraph.getECs():
         output.append(ecNumber.__str__())

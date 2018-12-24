@@ -1378,7 +1378,7 @@ class RedundancyType(Enum):
     ROBUSTNESS = [Robustness, 0]
     """
     If a key element is deleted from a graph, e.g. all enzymes realising a certain EC number are deleted from an organism's genome:    
-    Robustness exists if the former substrates and products are (at least partially) still connected, in their original direction, albeit via alternative paths.
+    Robustness exists if the former substrates and products are still connected, in their original direction, albeit via alternative paths.
     This means the alternative paths have to include both, the orginal substrate and product, at the same time.
     
     This means robustness is a sub-type of :attr:`FLEXIBILITY`. Only some flexible edges are also robust. Robustness and flexibility have an inheritance relation.
@@ -1398,7 +1398,7 @@ class RedundancyType(Enum):
     FLEXIBILITY = [Flexibility, 0]
     """
     If a key element is deleted from a graph, e.g. all enzymes realising a certain EC number are deleted from an organism's genome:
-    Flexibility exists if the former substrates and/or products can still be (at least partially) metabolised via alternative paths, in their original respective direction.
+    Flexibility exists if the former substrates and/or products can still be metabolised via alternative paths, in their original respective direction.
     This does **not** mean the alternative paths have to include both, the orginal substrate and product, at the same time.
     """
     
@@ -1685,7 +1685,9 @@ class Redundancy():
                 return self.robustness.partiallyRedundantKeyPaths
             
             elif redundancyType is RedundancyType.ROBUSTNESS_BOTH:
-                return self.robustness.redundantKeyPaths.update( self.robustness.partiallyRedundantKeyPaths )
+                both = self.robustness.redundantKeyPaths
+                both.update( self.robustness.partiallyRedundantKeyPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.FLEXIBILITY:
@@ -1695,7 +1697,9 @@ class Redundancy():
                 return self.flexibility.partiallyRedundantKeyPaths
             
             elif redundancyType is RedundancyType.FLEXIBILITY_BOTH:
-                return self.flexibility.redundantKeyPaths.update( self.flexibility.partiallyRedundantKeyPaths )
+                both = self.flexibility.redundantKeyPaths
+                both.update( self.flexibility.partiallyRedundantKeyPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY:
@@ -1705,7 +1709,9 @@ class Redundancy():
                 return self.flexibility.partiallyTargetRedundantKeyPaths
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY_BOTH:
-                return self.flexibility.targetRedundantKeyPaths.update( self.flexibility.partiallyTargetRedundantKeyPaths )
+                both = self.flexibility.targetRedundantKeyPaths
+                both.update( self.flexibility.partiallyTargetRedundantKeyPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY:
@@ -1715,7 +1721,9 @@ class Redundancy():
                 return self.flexibility.partiallySourceRedundantKeyPaths
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY_BOTH:
-                return self.flexibility.sourceRedundantKeyPaths.update( self.flexibility.partiallySourceRedundantKeyPaths )
+                both = self.flexibility.sourceRedundantKeyPaths
+                both.update( self.flexibility.partiallySourceRedundantKeyPaths )
+                return both
             
             
             else:
@@ -1940,7 +1948,9 @@ class RedundancyContribution():
                 return self.robustnessContribution.partiallyRedundantKeySpecialKeysOnPaths
             
             elif redundancyType is RedundancyType.ROBUSTNESS_BOTH:
-                return self.robustnessContribution.redundantKeySpecialKeysOnPaths.update( self.robustnessContribution.partiallyRedundantKeySpecialKeysOnPaths )
+                both = self.robustnessContribution.redundantKeySpecialKeysOnPaths
+                both.update( self.robustnessContribution.partiallyRedundantKeySpecialKeysOnPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.FLEXIBILITY:
@@ -1950,7 +1960,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyRedundantKeySpecialKeysOnPaths
             
             elif redundancyType is RedundancyType.FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.redundantKeySpecialKeysOnPaths.update( self.flexibilityContribution.partiallyRedundantKeySpecialKeysOnPaths )
+                both = self.flexibilityContribution.redundantKeySpecialKeysOnPaths
+                both.update( self.flexibilityContribution.partiallyRedundantKeySpecialKeysOnPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY:
@@ -1960,7 +1972,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyTargetRedundantKeySpecialKeysOnPaths
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.targetRedundantKeySpecialKeysOnPaths.update( self.flexibilityContribution.partiallyTargetRedundantKeySpecialKeysOnPaths )
+                both = self.flexibilityContribution.targetRedundantKeySpecialKeysOnPaths
+                both.update( self.flexibilityContribution.partiallyTargetRedundantKeySpecialKeysOnPaths )
+                return both
             
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY:
@@ -1970,7 +1984,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallySourceRedundantKeySpecialKeysOnPaths
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.sourceRedundantKeySpecialKeysOnPaths.update( self.flexibilityContribution.partiallySourceRedundantKeySpecialKeysOnPaths )
+                both = self.flexibilityContribution.sourceRedundantKeySpecialKeysOnPaths
+                both.update( self.flexibilityContribution.partiallySourceRedundantKeySpecialKeysOnPaths )
+                return both
             
             
             else:
@@ -2021,7 +2037,7 @@ class RedundancyContribution():
     
     def getContributedPathsForKey(self, redundancyType: RedundancyType = RedundancyType.default) -> Dict[Element, Set[MarkedPath]]:
         """
-        Get paths on which a special key contributes to redundancy, keyed by the key element they provide redundancy for.
+        Get paths on which any special key contributes to redundancy, keyed by the key element they provide redundancy for.
         
         Parameters
         ----------
@@ -2031,7 +2047,7 @@ class RedundancyContribution():
         Returns
         -------
         Dict[Element, Set[MarkedPath]]
-            Set of marked redundant paths that contain a special key, keyed by the key element they provide redundancy for.
+            Set of marked redundant paths that contain any special key, keyed by the key element they provide redundancy for.
         
         Raises
         ------
@@ -2046,7 +2062,9 @@ class RedundancyContribution():
                 return self.robustnessContribution.partiallyRedundantKeyPathsWithSpecialKey
             
             elif redundancyType is RedundancyType.ROBUSTNESS_BOTH:
-                return self.robustnessContribution.redundantKeyPathsWithSpecialKey.update( self.robustnessContribution.partiallyRedundantKeyPathsWithSpecialKey )
+                both = self.robustnessContribution.redundantKeyPathsWithSpecialKey
+                both.update( self.robustnessContribution.partiallyRedundantKeyPathsWithSpecialKey )
+                return both
             
             
             elif redundancyType is RedundancyType.FLEXIBILITY:
@@ -2056,7 +2074,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyRedundantKeyPathsWithSpecialKey
             
             elif redundancyType is RedundancyType.FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.redundantKeyPathsWithSpecialKey.update( self.flexibilityContribution.partiallyRedundantKeyPathsWithSpecialKey )
+                both = self.flexibilityContribution.redundantKeyPathsWithSpecialKey
+                both.update( self.flexibilityContribution.partiallyRedundantKeyPathsWithSpecialKey )
+                return both
             
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY:
@@ -2066,7 +2086,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyTargetRedundantKeyPathsWithSpecialKey
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.targetRedundantKeyPathsWithSpecialKey.update( self.flexibilityContribution.partiallyTargetRedundantKeyPathsWithSpecialKey )
+                both = self.flexibilityContribution.targetRedundantKeyPathsWithSpecialKey
+                both.update( self.flexibilityContribution.partiallyTargetRedundantKeyPathsWithSpecialKey )
+                return both
             
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY:
@@ -2076,7 +2098,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallySourceRedundantKeyPathsWithSpecialKey
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.sourceRedundantKeyPathsWithSpecialKey.update( self.flexibilityContribution.partiallySourceRedundantKeyPathsWithSpecialKey )
+                both = self.flexibilityContribution.sourceRedundantKeyPathsWithSpecialKey
+                both.update( self.flexibilityContribution.partiallySourceRedundantKeyPathsWithSpecialKey )
+                return both
             
             
             else:

@@ -466,11 +466,12 @@ class Clade(object):
     
     def neofunctionalisedECs(self, majorityPercentageCoreMetabolism = defaultMajorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation = defaultMajorityPercentageNeofunctionalisation, colour = False, eValue = defaultEValue, considerOnlyECs = None) -> SubstanceEcGraph:
         """
-        The substance-EC graph of EC numbers belonging to function changes of neofunctionalised enzymes.
+        The substance-EC graph of EC numbers belonging to function changes of neofunctionalised enzymes of the core metabolism.
         
         Only EC numbers which could have actually taken part in a function change are reported. This is because enzymes can have multiple EC numbers, while only some might be eligible for a function change.
         For example, consider enzyme A (1.2.3.4, 6.5.4.3) and enzyme B (1.2.3.4, 4.5.6.7). 1.2.3.4 can never change its function to itself, which leaves 1.2.3.4 <-> 6.5.4.3, 1.2.3.4 <-> 4.5.6.7, and 4.5.6.7 <-> 6.5.4.3 as possible function changes.
-        This obviously requires a function to change to a single other function, without splitting or merging, which might be biologically inacurate. However, this should happen rarely and you can exclude all enzymes with multiple functions from the core metabolism in the first place.
+        This obviously requires a function to change to a single other function, without splitting or merging, which might be biologically inacurate.
+        However, this should happen rarely, plus one could exclude all enzymes with multiple functions from the core metabolism in the first place.
         
         The maximum expectation value (e-value) necessary for a sequence alignment to constitute a "similar sequence" can be changed via :attr:`defaultEValue`.
         

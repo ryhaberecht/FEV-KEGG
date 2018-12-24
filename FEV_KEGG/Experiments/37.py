@@ -58,10 +58,10 @@ if __name__ == '__main__':
     taxonomy = NCBI.getTaxonomy()
     
     #- get group of organisms 'Archaea/Thaumarchaeota'
-    group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea/Thaumarchaeota') )
+    group = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea/Thaumarchaeota', oneOrganismPerSpecies=False) )
     
     #- get supergroup of organisms 'Archaea'
-    supergroup = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea') )
+    supergroup = Organism.Group( taxonomy.getOrganismAbbreviationsByPath('Archaea', oneOrganismPerSpecies=False) )
     
     #- calculate new EC numbers occuring in group's core metabolism compared to supergroup's core metabolism
     newECs = group.consensusEcGraph(noMultifunctional = True).getECs().difference( supergroup.consensusEcGraph(noMultifunctional = True).getECs() )

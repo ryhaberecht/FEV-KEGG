@@ -6,7 +6,7 @@ from FEV_KEGG.Graph.Models import DirectedMultiGraph
 from FEV_KEGG.KEGG import Database
 from FEV_KEGG.settings import verbosity as init_verbosity
 from FEV_KEGG import settings
-import copy as copylib
+
 
 class SubstanceGraph(DirectedMultiGraph):
     
