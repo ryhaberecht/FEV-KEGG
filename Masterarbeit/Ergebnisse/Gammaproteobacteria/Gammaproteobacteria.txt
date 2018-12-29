@@ -1,0 +1,15 @@
+core metabolism majority: 80%
+neofunctionalisation majority: 0% (this means that gene duplication within a single organism is enough)
+
+Proteobacteria/Gammaproteobacteria:
+
+core metabolism ECs: 275
+
+
+All neofunctionalisations: 8011
+        [see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
+
+"neofunctionalised" ECs: 61 (22%)
+
+Neofunctionalisations contributing to robustness: 3866 (48%)
+        [see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]

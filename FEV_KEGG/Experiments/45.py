@@ -6,9 +6,9 @@ How many EC numbers in Deltaproteobacteria are (partially) redundant?
 Method
 ------
 - get Deltaproteobacteria
-- get ECs
+- get core metabolism
 - calculate redundancy
-- print number of redundant ECs, including percentage of all ECs, for all types of redundancy
+- print percentage of redundant ECs, for all types of redundancy
 
 Result
 ------

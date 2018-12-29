@@ -60,7 +60,7 @@ Result
     6.1.1.5
     6.1.1.9
     
-    SimpleGeneDuplication + unrestricted: 56 (119%)
+    SimpleGroupGeneDuplication + unrestricted: 56 (119%)
     1.1.1.205
     1.1.1.23
     1.1.1.308

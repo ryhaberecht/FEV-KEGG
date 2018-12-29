@@ -1,0 +1,15 @@
+core metabolism majority: 80%
+neofunctionalisation majority: 0% (this means that gene duplication within a single organism is enough)
+
+Archaea:
+
+core metabolism ECs: 114
+
+
+All neofunctionalisations: 1140
+        [see Archaea_Neofunctionalisations-For-FunctionChange.html]
+        
+"neofunctionalised" ECs: 16 (14%)
+
+Neofunctionalisations contributing to robustness: 93 (8%)
+        [see Archaea_Neofunctionalisations-For-Contributed-EC.html]

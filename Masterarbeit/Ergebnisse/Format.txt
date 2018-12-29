@@ -1,0 +1,7 @@
+HTML-Dateien beziehen sich immer auf eine Klade und enthalten mehrere Tabellen mit jeweils einer Überschrift.
+
+Es gibt in dieser Ergebnissammlung zwei Arten von HTML-Dateien, die durch ihr Namensschema identifizierbar sind:
+
+In Dateien mit einem Namen wie "Archaea_Neofunctionalisations-For-Contributed-EC.html" ist die Überschrift eine robuste (bzw. partiell-robuste) EC-Nummer im Kernmetabolismus. Danach folgen Zeilen die Neofunktionalisierungen darstellen. Jede Neofunktionalisierung besteht aus genau zwei Enzymen mit jeweils genau einer EC-Nummer. Theoretisch können Enzyme auch mehrere EC-Nummern besitzen, solche haben wir bei der Erzeugung des Kernmetabolismus jedoch herausgefiltert. Jede der in den Tabellen-Zeilen dargestellten Neofunktionalisierungen sorgt durch eine (oder beide) ihrer EC-Nummern dafür, dass die EC-Nummer in der Überschrift an (zumindest partieller) Robustheit gewinnt.
+
+In Dateien mit einem Namen wie "Archaea_Neofunctionalisations-For-FunctionChange.html" ist die Überschrift eine Funktionsänderung. Eine Funktionsänderung ist nichts anderes als eine Liste der EC-Nummern der beiden Enzyme die an einer Neofunktionalisierung beteiligt sind. Diese Liste ist so sortiert, dass immer die kleinste EC-Nummer als erstes erscheint. Jede Tabellen-Zeile stellt wieder eine Neofunktionalisierung dar. Diesmal alle Neofunktionalisierungen die die selbe Funktionsänderung teilen, völlig unabhängig ihres eventuellen Einfluss auf die Robustheit des Kernmetabolismus.

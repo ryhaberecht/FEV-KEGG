@@ -91,7 +91,7 @@ Conclusion
 ----------
 Deltaproteobacteria consistently have more "neofunctionalised" EC numbers, which is not surprising, as the core metabolism is much bigger.
 The same effect explains the constant increase in "neofunctionalised" EC numbers with growing core metabolism, due to lower majority-percentage.
-This indicates that neofunctionalisation is widespread and not limited to the most important parts of metabolism. However, there might still be a statistical which remains to be investigated.
+This indicates that neofunctionalisation is widespread and not limited to the most important, hence widespread, parts of metabolism. However, there might still be a statistical skew which remains to be investigated.
 
 Occurence in these results above does not mean, that those ECs are actually "neofunctionalised" in all of the organisms! Because in this experiment, a single neofunctionalisation is enough to mark the associated ECs as "neofunctionalised".
 It might be interesting to increase the neofunctionalisation majority percentage, to only include ECs which have neofunctionalisations in x% of the clade's organisms. 
