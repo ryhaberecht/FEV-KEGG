@@ -135,6 +135,11 @@ def dictToHtml(dictionary, byValueFirst = False, addEcDescriptions = False, head
     doc, tag, _ = Doc().tagtext()
     
     with tag('html'):
+        
+        # remove underline from links
+        with tag('head'):
+            doc.asis('<style type="text/css">a {text-decoration:none;}</style>')
+        
         with tag('body'):
             
             for heading, rows in sortedList:
