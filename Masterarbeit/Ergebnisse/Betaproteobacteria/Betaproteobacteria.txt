@@ -5,11 +5,14 @@ Betaproteobacteria:
 
 core metabolism ECs: 298
 
+"neofunctionalised" ECs: 70 (23%)
+robust ECs: 66 (22%)
+    of which are robust due to "neofunctionalised" ECs: 55%
+
 
 All neofunctionalisations: 8578
-        [see Betaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
+	[see Betaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
 
-"neofunctionalised" ECs: 70 (23%)
 
-Neofunctionalisations contributing to robustness: 3908 (46%)
-        [see Betaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]
+Neofunctionalisations contributing to robustness: 4663 (54%)
+	[see Betaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]

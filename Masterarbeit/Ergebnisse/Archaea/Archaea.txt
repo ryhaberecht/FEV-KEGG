@@ -5,11 +5,14 @@ Archaea:
 
 core metabolism ECs: 114
 
+"neofunctionalised" ECs: 16 (14%)
+robust ECs: 2 ( 2%)
+    of which are robust due to "neofunctionalised" ECs: 100%
+
 
 All neofunctionalisations: 1140
-        [see Archaea_Neofunctionalisations-For-FunctionChange.html]
-        
-"neofunctionalised" ECs: 16 (14%)
+	[see Archaea_Neofunctionalisations-For-FunctionChange.html]
 
-Neofunctionalisations contributing to robustness: 93 (8%)
-        [see Archaea_Neofunctionalisations-For-Contributed-EC.html]
+
+Neofunctionalisations contributing to robustness: 93 ( 8%)
+	[see Archaea_Neofunctionalisations-For-Contributed-EC.html]

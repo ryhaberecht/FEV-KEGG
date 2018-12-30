@@ -5,11 +5,14 @@ Proteobacteria/Gammaproteobacteria:
 
 core metabolism ECs: 275
 
+"neofunctionalised" ECs: 61 (22%)
+robust ECs: 64 (23%)
+    of which are robust due to "neofunctionalised" ECs: 55%
+
 
 All neofunctionalisations: 8011
-        [see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
+	[see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
 
-"neofunctionalised" ECs: 61 (22%)
 
-Neofunctionalisations contributing to robustness: 3866 (48%)
-        [see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]
+Neofunctionalisations contributing to robustness: 5230 (65%)
+	[see Proteobacteria/Gammaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]

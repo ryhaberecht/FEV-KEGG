@@ -1808,7 +1808,9 @@ class RedundancyContribution():
                 return self.robustnessContribution.partiallyRedundantKeysWithSpecialKeyOnPathsRatio
             
             elif redundancyType is RedundancyType.ROBUSTNESS_BOTH:
-                return self.robustnessContribution.redundantKeysWithSpecialKeyOnPathsRatio + self.robustnessContribution.partiallyRedundantKeysWithSpecialKeyOnPathsRatio
+                contributedKeys = self.robustnessContribution.sumRedundantKeysWithSpecialKeyOnPaths + self.robustnessContribution.sumPartiallyRedundantKeysWithSpecialKeyOnPaths
+                sumKeys = self.robustnessContribution.robustness.sumRedundantKeys + self.robustnessContribution.robustness.sumPartiallyRedundantKeys
+                return contributedKeys / sumKeys
             
             
             elif redundancyType is RedundancyType.FLEXIBILITY:
@@ -1818,7 +1820,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyRedundantKeysWithSpecialKeyOnPathsRatio
             
             elif redundancyType is RedundancyType.FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.redundantKeysWithSpecialKeyOnPathsRatio + self.flexibilityContribution.partiallyRedundantKeysWithSpecialKeyOnPathsRatio
+                contributedKeys = self.flexibilityContribution.sumRedundantKeysWithSpecialKeyOnPaths + self.flexibilityContribution.sumPartiallyRedundantKeysWithSpecialKeyOnPaths
+                sumKeys = self.flexibilityContribution.robustness.sumRedundantKeys + self.flexibilityContribution.robustness.sumPartiallyRedundantKeys
+                return contributedKeys / sumKeys
             
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY:
@@ -1828,7 +1832,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallyTargetRedundantKeysWithSpecialKeyOnPathsRatio
             
             elif redundancyType is RedundancyType.TARGET_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.targetRedundantKeysWithSpecialKeyOnPathsRatio + self.flexibilityContribution.partiallyTargetRedundantKeysWithSpecialKeyOnPathsRatio
+                contributedKeys = self.flexibilityContribution.sumTargetRedundantKeysWithSpecialKeyOnPaths + self.flexibilityContribution.sumPartiallyTargetRedundantKeysWithSpecialKeyOnPaths
+                sumKeys = self.flexibilityContribution.robustness.sumTargetRedundantKeys + self.flexibilityContribution.robustness.sumPartiallyTargetRedundantKeys
+                return contributedKeys / sumKeys
             
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY:
@@ -1838,7 +1844,9 @@ class RedundancyContribution():
                 return self.flexibilityContribution.partiallySourceRedundantKeysWithSpecialKeyOnPathsRatio
             
             elif redundancyType is RedundancyType.SOURCE_FLEXIBILITY_BOTH:
-                return self.flexibilityContribution.sourceRedundantKeysWithSpecialKeyOnPathsRatio + self.flexibilityContribution.partiallySourceRedundantKeysWithSpecialKeyOnPathsRatio
+                contributedKeys = self.flexibilityContribution.sumSourceRedundantKeysWithSpecialKeyOnPaths + self.flexibilityContribution.sumPartiallySourceRedundantKeysWithSpecialKeyOnPaths
+                sumKeys = self.flexibilityContribution.robustness.sumSourceRedundantKeys + self.flexibilityContribution.robustness.sumPartiallySourceRedundantKeys
+                return contributedKeys / sumKeys
             
             
             else:

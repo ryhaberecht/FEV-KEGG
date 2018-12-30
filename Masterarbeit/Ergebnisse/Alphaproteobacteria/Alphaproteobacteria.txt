@@ -5,11 +5,14 @@ Alphaproteobacteria:
 
 core metabolism ECs: 215
 
+"neofunctionalised" ECs: 46 (21%)
+robust ECs: 50 (23%)
+    of which are robust due to "neofunctionalised" ECs: 56%
+
 
 All neofunctionalisations: 3690
-        [see Alphaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
+	[see Alphaproteobacteria_Neofunctionalisations-For-FunctionChange.html]
 
-"neofunctionalised" ECs: 46 (21%)
 
-Neofunctionalisations contributing to robustness: 1800 (49%)
-        [see Alphaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]
+Neofunctionalisations contributing to robustness: 2317 (63%)
+	[see Alphaproteobacteria_Neofunctionalisations-For-Contributed-EC.html]

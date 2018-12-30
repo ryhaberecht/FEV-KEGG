@@ -5,11 +5,14 @@ Bacilli:
 
 core metabolism ECs: 185
 
+"neofunctionalised" ECs: 39 (21%)
+robust ECs: 32 (17%)
+    of which are robust due to "neofunctionalised" ECs: 53%
+
 
 All neofunctionalisations: 2254
-        [see Bacilli_Neofunctionalisations-For-FunctionChange.html]
+	[see Bacilli_Neofunctionalisations-For-FunctionChange.html]
 
-"neofunctionalised" ECs: 39 (21%)
 
-Neofunctionalisations contributing to robustness: 175 ( 8%)
-        [see Bacilli_Neofunctionalisations-For-Contributed-EC.html]
+Neofunctionalisations contributing to robustness: 206 ( 9%)
+	[see Bacilli_Neofunctionalisations-For-Contributed-EC.html]

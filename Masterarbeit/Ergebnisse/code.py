@@ -2,17 +2,16 @@ from FEV_KEGG.KEGG.File import cache
 from FEV_KEGG.Evolution.Clade import Clade
 from FEV_KEGG.Statistics import Percent
 from FEV_KEGG.Robustness.Topology.Redundancy import RedundancyType, Redundancy, RedundancyContribution
-from FEV_KEGG import settings
 from FEV_KEGG.Util.Util import dictToHtmlFile
 
 @cache(folder_path='experiments', file_name='alphaproteobacteria_clade')
 def getClade():
-     clade = Clade('Alphaproteobacteria')
-     # pre-fetch collective metabolism into memory
-     clade.collectiveMetabolism(excludeMultifunctionalEnzymes=settings.defaultNoMultifunctional)
-     # pre-fetch collective enzyme metabolism into memory
-     clade.collectiveMetabolismEnzymes(excludeMultifunctionalEnzymes=settings.defaultNoMultifunctional)
-     return clade
+    clade = Clade('Alphaproteobacteria')
+    # pre-fetch collective metabolism into memory
+    clade.collectiveMetabolism(excludeMultifunctionalEnzymes=True)
+    # pre-fetch collective enzyme metabolism into memory
+    clade.collectiveMetabolismEnzymes(excludeMultifunctionalEnzymes=True)
+    return clade
 
 if __name__ == '__main__':
 
@@ -37,23 +36,6 @@ if __name__ == '__main__':
     output.append( 'core metabolism ECs: ' + str(cladeEcCount) )
     output.append('')
     
-    #- report neofunctionalisations
-    neofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
-    allNeofunctionalisations = set() # set of all neofunctionalisations, no matter which function change they belong to
-    for valueSet in neofunctionalisationsForFunctionChange.values():
-        allNeofunctionalisations.update( valueSet )
-
-    output.append('')
-    output.append( 'All neofunctionalisations: ' + str(len(allNeofunctionalisations)) )
-    
-    #-     print them into nice HTML
-    ecNumbers = set()
-    for functionChange in neofunctionalisationsForFunctionChange.keys():
-        ecNumbers.update( functionChange.ecPair )
-    dictToHtmlFile(neofunctionalisationsForFunctionChange, clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions=ecNumbers)
-    output.append( '\t[see ' + clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html]' )
-    output.append('')
-    
     #- calculate "neofunctionalised" ECs
     cladeNeofunctionalisedMetabolismSet = clade.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue).getECs()
     cladeNeofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
@@ -67,6 +49,32 @@ if __name__ == '__main__':
     
     #- REPEAT for each function change consisting of "neofunctionalised" ECs, which also contribute to redundancy
     output.append( '"neofunctionalised" ECs: ' + str(len(cladeNeofunctionalisedMetabolismSet)) + ' (' + str(Percent.getPercentStringShort(len(cladeNeofunctionalisedMetabolismSet), cladeEcCount, 0)) + '%)' )
+    
+    robustKeys = cladeRedundancy.getRedundantKeys(redundancyType)
+    robustKeysCount = len(robustKeys)
+    output.append( 'robust ECs: ' + str(robustKeysCount) + ' (' + str(Percent.getPercentStringShort(robustKeysCount, cladeEcCount, 0)) + '%)' )
+    
+    output.append( '    of which are robust due to "neofunctionalised" ECs: ' + str(Percent.getPercentStringShort(cladeRedundancyContribution.getKeyContributionRatio(redundancyType), 1, 0)) + '%' )
+    
+    
+    
+    #- report neofunctionalisations
+    neofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
+    allNeofunctionalisations = set() # set of all neofunctionalisations, no matter which function change they belong to
+    for valueSet in neofunctionalisationsForFunctionChange.values():
+        allNeofunctionalisations.update( valueSet )
+
+    output.append('')
+    output.append('')
+    output.append( 'All neofunctionalisations: ' + str(len(allNeofunctionalisations)) )
+    
+    #-     print them into nice HTML
+    ecNumbers = set()
+    for functionChange in neofunctionalisationsForFunctionChange.keys():
+        ecNumbers.update( functionChange.ecPair )
+    dictToHtmlFile(neofunctionalisationsForFunctionChange, clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html', byValueFirst=False, inCacheFolder=True, addEcDescriptions=ecNumbers)
+    output.append( '\t[see ' + clade.ncbiNames[0] + '_Neofunctionalisations-For-FunctionChange.html]' )
+    output.append('')
     
     robustnessContributingNeofunctionalisations = dict()
     
