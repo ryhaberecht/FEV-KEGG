@@ -154,7 +154,7 @@ class Robustness():
         group : Organism.Group
             The group from which to extract the graph.
         majorityPercentage : float, optional
-            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage`% majority.
+            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage` % majority.
         
         Returns
         -------
@@ -175,7 +175,7 @@ class Robustness():
         clade : Clade
             The clade from which to extract the graph.
         majorityPercentage : float, optional
-            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage`% majority.
+            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage` % majority.
         
         Returns
         -------
@@ -2158,7 +2158,7 @@ class Comparison():
         groupB : Organism.Group
             Second group from which to extract the graph.
         majorityPercentage : float, optional
-            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage`% majority.
+            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage` % majority.
         
         Returns
         -------
@@ -2179,7 +2179,7 @@ class Comparison():
         cladePair : CladePair
             The pair of clades from which to extract the graph.
         majorityPercentage : float, optional
-            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage`% majority.
+            If *None*, use collective EC graph. If not *None*, use majority EC graph with `majorityPercentage` % majority.
         
         Returns
         -------

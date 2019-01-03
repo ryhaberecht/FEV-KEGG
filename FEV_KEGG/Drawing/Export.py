@@ -129,7 +129,7 @@ def addDescriptionAttribute(nxGraph: networkx.classes.MultiGraph):
     attributeDict = dict()
     for edge in edges:
         try:
-            attributeDict[edge] = edge[2].description
+            attributeDict[edge] = edge[2].description if edge[2].description is not None else ''
         except AttributeError:
             continue
     
@@ -141,7 +141,7 @@ def addDescriptionAttribute(nxGraph: networkx.classes.MultiGraph):
     attributeDict = dict()
     for node in nodes:
         try:
-            attributeDict[node] = node.description
+            attributeDict[node] = node.description if node.description is not None else ''
         except AttributeError:
             continue
     
@@ -167,7 +167,7 @@ def addReactionAttribute(nxGraph: networkx.classes.MultiGraph):
     attributeDict = dict()
     for edge in edges:
         try:
-            attributeDict[edge] = edge[2].reaction
+            attributeDict[edge] = edge[2].reaction if edge[2].reaction is not None else ''
         except AttributeError:
             continue
     
@@ -193,7 +193,7 @@ def addMajorityAttribute(graph: Models.CommonGraphApi, totalNumberOfOrganisms: i
     if not isinstance(nxGraph, networkx.classes.graph.Graph):
         raise NotImplementedError("This graph model can not be annotated for majority, yet.")
     
-    # add color to edges
+    # add majority to edges
     if graph.edgeCounts is not None:
         
         attributeDict = dict()
@@ -202,7 +202,7 @@ def addMajorityAttribute(graph: Models.CommonGraphApi, totalNumberOfOrganisms: i
         
         networkx.set_edge_attributes(nxGraph, attributeDict, MAJORITY_NAME)
     
-    # add color to nodes
+    # add majority to nodes
     if graph.nodeCounts is not None:
         
         attributeDict = dict()
@@ -230,7 +230,7 @@ def addUrlAttribute(nxGraph: networkx.classes.MultiGraph):
 
     attributeDict = dict()
     for edge in edges:
-        attributeDict[edge] = edge[2].getUrl()
+        attributeDict[edge] = edge[2].getUrl() if edge[2].getUrl() is not None else ''
     
     networkx.set_edge_attributes(nxGraph, attributeDict, URL_NAME)
     
@@ -239,7 +239,7 @@ def addUrlAttribute(nxGraph: networkx.classes.MultiGraph):
     
     attributeDict = dict()
     for node in nodes:
-        attributeDict[node] = node.getUrl()
+        attributeDict[node] = node.getUrl() if node.getUrl() is not None else ''
     
     networkx.set_node_attributes(nxGraph, attributeDict, URL_NAME)
 

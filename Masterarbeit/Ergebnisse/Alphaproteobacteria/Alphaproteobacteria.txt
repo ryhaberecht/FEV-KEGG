@@ -1,7 +1,7 @@
 core metabolism majority: 80%
 neofunctionalisation majority: 0% (this means that gene duplication within a single organism is enough)
 
-Alphaproteobacteria:
+Alphaproteobacteria: 360 organisms
 
 core metabolism ECs: 215
 

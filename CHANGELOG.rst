@@ -24,6 +24,7 @@ Changelog
 ------------------
 - Bug-fix: Improved parsing and error handling of gene description files.
 - Bug-fix: Fixed deprecated API-calls in older experiments.
+- Bug-fix: Export of GraphML failed due to None values.
 - Added experiment 45.
 - Fixed typos.
 - Master's thesis release!

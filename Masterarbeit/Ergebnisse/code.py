@@ -3,6 +3,7 @@ from FEV_KEGG.Evolution.Clade import Clade
 from FEV_KEGG.Statistics import Percent
 from FEV_KEGG.Robustness.Topology.Redundancy import RedundancyType, Redundancy, RedundancyContribution
 from FEV_KEGG.Util.Util import dictToHtmlFile
+from FEV_KEGG.Drawing import Export
 
 @cache(folder_path='experiments', file_name='alphaproteobacteria_clade')
 def getClade():
@@ -27,7 +28,7 @@ if __name__ == '__main__':
     output.append( 'core metabolism majority: ' + str(majorityPercentageCoreMetabolism) + '%' )
     output.append( 'neofunctionalisation majority: ' + str(majorityPercentageNeofunctionalisation) + '% (this means that gene duplication within a single organism is enough)' )
     output.append('')
-    output.append(', '.join(clade.ncbiNames) + ':')
+    output.append(', '.join(clade.ncbiNames) + ': ' + str(clade.organismsCount) + ' organisms')
     output.append('')
     
     #- get core metabolism
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     cladeEcCount = len(cladeEcGraph.getECs())
     output.append( 'core metabolism ECs: ' + str(cladeEcCount) )
     output.append('')
-    
+
     #- calculate "neofunctionalised" ECs
     cladeNeofunctionalisedMetabolismSet = clade.neofunctionalisedECs(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue).getECs()
     cladeNeofunctionalisationsForFunctionChange = clade.neofunctionalisationsForFunctionChange(majorityPercentageCoreMetabolism, majorityPercentageNeofunctionalisation, eValue=eValue)
@@ -46,6 +47,21 @@ if __name__ == '__main__':
         
     cladeRobustnessContributedECsForContributingNeofunctionalisedEC = cladeRedundancyContribution.getContributedKeysForSpecial(redundancyType)
     cladeRobustnessContributingNeofunctionalisedECs = set(cladeRobustnessContributedECsForContributingNeofunctionalisedEC.keys())
+    
+    #- export graph of core metabolism, colouring the edges of (contributing) neofunctionalised ECs
+    edgesOfNeofunctionalisedECs = set()
+    for key in cladeNeofunctionalisedMetabolismSet:
+        for edge in cladeEcGraph.getEdgesFromKey(key):
+            edgesOfNeofunctionalisedECs.add(edge)
+    Export.addColourAttribute(cladeEcGraph, Export.Colour.BLUE, nodes = False, edges = edgesOfNeofunctionalisedECs)
+    
+    edgesOfContributingNeofunctionalisedECs = set()
+    for key in cladeRobustnessContributingNeofunctionalisedECs:
+        for edge in cladeEcGraph.getEdgesFromKey(key):
+            edgesOfContributingNeofunctionalisedECs.add(edge)
+    Export.addColourAttribute(cladeEcGraph, Export.Colour.GREEN, nodes = False, edges = edgesOfContributingNeofunctionalisedECs)
+    
+    Export.forCytoscape(cladeEcGraph, clade.ncbiNames[0], inCacheFolder = True, addDescriptions = True, totalNumberOfOrganisms = clade.organismsCount)
     
     #- REPEAT for each function change consisting of "neofunctionalised" ECs, which also contribute to redundancy
     output.append( '"neofunctionalised" ECs: ' + str(len(cladeNeofunctionalisedMetabolismSet)) + ' (' + str(Percent.getPercentStringShort(len(cladeNeofunctionalisedMetabolismSet), cladeEcCount, 0)) + '%)' )

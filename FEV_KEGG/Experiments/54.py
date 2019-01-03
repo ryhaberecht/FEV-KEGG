@@ -55,7 +55,7 @@ Archaea do not seem to have many neofunctionalisations contributing to robustnes
 This might be limited by:
 - the size of the core metabolism, i.e. the majority percentage.
 - the E-value. The lower the E-value, the closer two enzymes' sequences have to match, for them to be recognised as gene-duplicated.
-    Using a higher E-value will greatly increase the number of neofunctionalisations reported. Of course, this will also increase the number of false-positives.
+Using a higher E-value will greatly increase the number of neofunctionalisations reported. Of course, this will also increase the number of false-positives.
 """
 from FEV_KEGG.KEGG.File import cache
 from FEV_KEGG.Evolution.Clade import Clade

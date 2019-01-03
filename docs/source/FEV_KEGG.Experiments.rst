@@ -47,6 +47,7 @@ Submodules
    FEV_KEGG.Experiments.39
    FEV_KEGG.Experiments.40
    FEV_KEGG.Experiments.41
+   FEV_KEGG.Experiments.42
    FEV_KEGG.Experiments.43
    FEV_KEGG.Experiments.44
    FEV_KEGG.Experiments.45
@@ -59,6 +60,7 @@ Submodules
    FEV_KEGG.Experiments.52
    FEV_KEGG.Experiments.53
    FEV_KEGG.Experiments.54
+   FEV_KEGG.Experiments.55
 
 Module contents
 ---------------
