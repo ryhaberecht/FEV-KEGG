@@ -365,7 +365,7 @@ class EnzymeComplete(Enzyme):
     
 class EcNumber(Element):
     WILDCARD = '-'
-    REGEX_PATTERN = re.compile('^[1-6]\.(([1-9][0-9]{0,1})|\-)\.(((?<!\-\.)([1-9][0-9]{0,1}))|\-)\.(((?<!\-\.)([1-9][0-9]{0,2}))|\-)$')
+    REGEX_PATTERN = re.compile('^[1-7]\.(([1-9][0-9]{0,1})|\-)\.(((?<!\-\.)([1-9][0-9]{0,1}))|\-)\.(((?<!\-\.)([1-9][0-9]{0,2}))|\-)$')
     
     def __init__(self, ecNumberString: '4.2.3.1'):
         """
