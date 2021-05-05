@@ -22,8 +22,8 @@ from xml.etree import ElementTree
 
 from io import StringIO
 
-from Bio.KEGG.KGML.KGML_pathway import Component, Entry, Graphics
-from Bio.KEGG.KGML.KGML_pathway import Pathway, Reaction, Relation
+from FEV_KEGG.lib.Biopython.KEGG.KGML.KGML_pathway import Component, Entry, Graphics
+from FEV_KEGG.lib.Biopython.KEGG.KGML.KGML_pathway import Pathway, Reaction, Relation
 
 
 def read(handle):
@@ -77,7 +77,7 @@ class KGMLParser:
 
     Example: Read and parse large metabolism file
 
-    >>> from Bio.KEGG.KGML.KGML_parser import read
+    >>> from FEV_KEGG.lib.Biopython.KEGG.KGML.KGML_parser import read
     >>> pathway = read(open('KEGG/ko01100.xml', 'r'))
     >>> print(len(pathway.entries))
     3628
@@ -170,20 +170,20 @@ class KGMLParser:
                 _parse_reaction(element)
             elif element.tag == "relation":
                 _parse_relation(element)
-            # Parsing of some elements not implemented - no examples yet
-            else:
-                # This should warn us of any unimplemented tags
-                import warnings
-                from Bio import BiopythonParserWarning
-
-                warnings.warn(
-                    "Warning: tag %s not implemented in parser" % element.tag,
-                    BiopythonParserWarning,
-                )
+            # # Parsing of some elements not implemented - no examples yet
+            # else:
+            #     # This should warn us of any unimplemented tags
+            #     import warnings
+            #     from Bio import BiopythonParserWarning
+            #
+            #     warnings.warn(
+            #         "Warning: tag %s not implemented in parser" % element.tag,
+            #         BiopythonParserWarning,
+            #     )
         return self.pathway
 
 
-if __name__ == "__main__":
-    from Bio._utils import run_doctest
-
-    run_doctest(verbose=0)
+# if __name__ == "__main__":
+#     from Bio._utils import run_doctest
+#
+#     run_doctest(verbose=0)
