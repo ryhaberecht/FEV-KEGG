@@ -73,7 +73,7 @@ if __name__ == '__main__':
     edges = difference_enzymeGraph.getEdges()
     for edge in edges:
         substrate, product, enzyme = edge
-        output.append(substrate.__str__() + ' -> ' + enzyme.geneName + ' ' + enzyme.name + ' [' + enzyme.getEcNumbersString() + '] ' + enzyme.definition + ' -> ' + product.__str__())
+        output.append(substrate.__str__() + ' -> ' + enzyme.geneName + ' ' + enzyme.name + ' [' + enzyme.getEcNumbersString() + '] ' + enzyme.description + ' -> ' + product.__str__())
     
     output.sort()
     print(str(len(output)) + ' results')
