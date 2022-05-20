@@ -281,7 +281,7 @@ class Enzyme(Element):
         ValueError
             If `organismAbbreviation` and `geneName` do not form a valid gene ID. Or if any of the EC numbers in `ecNumberStrings` is not a valid EC number.
         """
-        return cls(organismAbbreviation = gene.organismAbbreviation, geneName = gene.number, ecNumberStrings = gene.ecNumbers, name = gene.name, description = gene.definition)
+        return cls(organismAbbreviation = gene.organismAbbreviation, geneName = gene.number, ecNumberStrings = gene.ecNumbers, name = gene.symbol, description = gene.name)
     
     def __lt__(self, other):
         
@@ -359,7 +359,7 @@ class EnzymeComplete(Enzyme):
         ValueError
             See parent class.
         """
-        super().__init__(gene.organismAbbreviation, gene.number, gene.name, gene.ecNumbers)
+        super().__init__(gene.organismAbbreviation, gene.number, gene.symbol, gene.ecNumbers)
         self.gene = gene
     
     

@@ -21,10 +21,10 @@ class Gene(object):
         ----------
         self.number : str
             The name of the gene, e.g. 'Acav_0021'.
-        self.name : str
+        self.symbol : str
             Colloquial name of the gene product, e.g. 'ThrC'.
-        self.definition : str
-            Long description of the gene, e.g. '(GenBank) Homoserine dehydrogenase'.
+        self.name : str
+            Long name of the gene, e.g. '(GenBank) Homoserine dehydrogenase'.
         
         self.isProtein : bool
         self.ecNumbers : List[str]
@@ -71,7 +71,7 @@ class Gene(object):
             
             self.name = None
             
-            self.definition = None
+            self.symbol = None
             
             self.ecNumbers = list()
             self.keggOrthologyNames = list()
@@ -122,9 +122,9 @@ class Gene(object):
                             
                             self.name = currentContent[0]
                         
-                        elif lastSection == 'DEFINITION':
+                        elif lastSection == 'SYMBOL':
                             
-                            self.definition = currentContent[0]
+                            self.symbol = currentContent[0]
                         
                         elif lastSection == 'ORTHOLOGY':
                             
