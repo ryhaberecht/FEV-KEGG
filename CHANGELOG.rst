@@ -28,3 +28,8 @@ Changelog
 - Added experiment 45.
 - Fixed typos.
 - Master's thesis release!
+
+1.1.4 (2022-05-20)
+------------------
+- Bug-fix: non-existing attribute
+- Bug-fix: KEGG changed attributes of gene type

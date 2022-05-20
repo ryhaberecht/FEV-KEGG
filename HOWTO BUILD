@@ -29,6 +29,7 @@ python setup.py sdist
 python setup.py bdist_wheel
 
 # upload to PyPI
+twine check dist/FEV_KEGG-[version]*
 twine upload dist/FEV_KEGG-[version]*
 
 Upload to GitHub

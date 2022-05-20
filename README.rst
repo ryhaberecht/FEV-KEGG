@@ -128,6 +128,6 @@ Caching
   - Windows: C:\\Users\\username\\AppData\\Local\\ryh\\FEV-KEGG\\Cache
   
 - All downloads from KEGG are cached automatically. Also, basic graphs are cached by organism. These default cachings alone can grow the cache directory to 100 GB size!
-- You can cache any function's result using the @cache decorator, see :func:`FEV_KEGG.KEGG.File.cache`. Watch out to remember the path and file name and not to overwrite any other cached files.
+- You can cache any function's result using the @cache decorator, see *FEV_KEGG.KEGG.File.cache*. Watch out to remember the path and file name and not to overwrite any other cached files.
 - To cause a download of the newest version of data from KEGG, you have to delete the cached file manually. Have a look inside the 'cache' folder, file paths and names should be self-explanatory.
 - On Linux with supporting file systems, disabling atime (file access time) for the cache directory and all its contents might improve performance: sudo chattr -R +A ~/.cache/FEV-KEGG
